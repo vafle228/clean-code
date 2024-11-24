@@ -3,7 +3,7 @@ using Markdown.Tokenizer.Tokens;
 
 namespace Markdown.Tokenizer;
 
-public class Tokenizer
+public class MarkdownTokenizer
 {
     private ITokenScanner[] scanners = [new SpecScanner(), new TextScanner()];
 
