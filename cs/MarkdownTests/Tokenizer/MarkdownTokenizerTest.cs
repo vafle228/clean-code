@@ -16,8 +16,8 @@ public class MarkdownTokenizerTest
         var tokenizer = new MarkdownTokenizer();
         
         var tokens = tokenizer.Tokenize(markdown);
+        
         var totalLength = tokens.Sum(token => token.Length);
-
         totalLength.Should().Be(markdown.Length);
     }
     
