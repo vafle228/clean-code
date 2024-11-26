@@ -20,10 +20,8 @@ public class ListExtensionsTest
     public void ListExtensions_SingleMatch_ReturnZeroMatchOnBiggerPattern(string text)
     {
         var tokens = Tokenize(text);
-        var pattern = MatchPattern
-            .StartWith(TokenType.TEXT)
-            .ContinueWith(TokenType.TEXT)
-            .EndWith(TokenType.TEXT);
+        var pattern = MatchPattern.Start()
+            .ContinueWithRepeat([TokenType.TEXT], 3).End();
 
         var match = tokens.SingleMatch(pattern);
         
@@ -46,11 +44,8 @@ public class ListExtensionsTest
     public void ListExtensions_SingleMatch_ReturnMatchWhenThereIsMatch(string text)
     {
         var tokens = Tokenize(text);
-        var pattern = MatchPattern
-            .StartWith(TokenType.TEXT)
-            .ContinueWith(TokenType.SPACE)
-            .ContinueWith(TokenType.TEXT)
-            .ContinueWith(TokenType.SPACE)
+        var pattern = MatchPattern.Start()
+            .ContinueWithRepeat([TokenType.TEXT, TokenType.SPACE], 2)
             .EndWith(TokenType.TEXT);
         
         var match = tokens.SingleMatch(pattern);
@@ -64,11 +59,8 @@ public class ListExtensionsTest
     public void ListExtensions_SingleMatch_ReturnMatchFromGivenBeginning(string text, int begin)
     {
         var tokens = Tokenize(text);
-        var pattern = MatchPattern
-            .StartWith(TokenType.TEXT)
-            .ContinueWith(TokenType.SPACE)
-            .ContinueWith(TokenType.TEXT)
-            .ContinueWith(TokenType.SPACE)
+        var pattern = MatchPattern.Start()
+            .ContinueWithRepeat([TokenType.TEXT, TokenType.SPACE], 2)
             .EndWith(TokenType.TEXT);
         
         var match = tokens.SingleMatch(pattern, begin);
