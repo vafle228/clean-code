@@ -10,7 +10,7 @@ internal class Program
 {
     public static void Main(string[] args)
     {
-        var markdown = "This is a sample markdown file.";
+        var markdown = "This _is_ a __sample__ markdown _file_.\n";
         
         var tokens = new MarkdownTokenizer().Tokenize(markdown);
         var astRoot = new TokenParser().Parse(tokens);

@@ -6,12 +6,13 @@ public class TextScanner : ITokenScanner
 {
     private readonly SpecScanner specScanner = new();
     
-    public Token? Scan(string markdown)
+    public Token? Scan(string markdown, int begin = 0)
     {
-        var textValue = markdown
-                .Select(c => c.ToString())
-                .TakeWhile(c => specScanner.Scan(c) != null)
-                .ToString();
-        return textValue == null ? null : new Token(TokenType.TEXT, textValue);
+        var textIterator = markdown
+            .Skip(begin)
+            .Select(c => c.ToString())
+            .TakeWhile(c => specScanner.Scan(c) == null);
+        var textValue = string.Join("", textIterator);
+        return textValue == string.Empty ? null : new Token(TokenType.TEXT, textValue);
     }
 }
