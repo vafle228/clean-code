@@ -4,10 +4,13 @@ namespace Markdown.Tokenizer.Scanners;
 
 public class SpecScanner : ITokenScanner
 {
-    public Token? Scan(string markdown, int begin = 0) => markdown[begin] switch
+    public Token? Scan(string markdown, int begin = 0) 
+        => Scan(markdown[begin], begin);
+
+    public Token? Scan(char symbol, int begin = 0) => symbol switch
     {
-        '_' => new Token(TokenType.UNDERSCORE, "_"),
-        '\n' => new Token(TokenType.NEW_LINE, "\n"),
+        '_' => new Token(TokenType.UNDERSCORE, begin, 1),
+        '\n' => new Token(TokenType.NEW_LINE, begin, 1),
         _ => null
     };
 }
