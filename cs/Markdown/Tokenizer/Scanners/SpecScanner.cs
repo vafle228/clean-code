@@ -10,7 +10,7 @@ public class SpecScanner : ITokenScanner
         if (tokenType is null) return null;
         
         var notNullType = (TokenType)tokenType;
-        return new Token(notNullType, begin, 1);
+        return new Token(notNullType, begin, 1, markdown);
     }
     
     public static bool CanScan(char symbol) 

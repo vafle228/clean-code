@@ -10,7 +10,7 @@ public class NumberScanner : ITokenScanner
             .Skip(begin)
             .TakeWhile(CanScan);
         var numberLen = numberIterator.Count();
-        return numberLen == 0 ? null : new Token(TokenType.NUMBER, begin, numberLen);
+        return numberLen == 0 ? null : new Token(TokenType.NUMBER, begin, numberLen, markdown);
     }
     
     public static bool CanScan(char symbol) => char.IsDigit(symbol);
