@@ -2,7 +2,7 @@
 
 public enum TokenType
 {
-    TEXT,
+    WORD,
     UNDERSCORE,
     SPACE,
     NEW_LINE,

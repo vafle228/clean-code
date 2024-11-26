@@ -21,7 +21,7 @@ public class ListExtensionsTest
     {
         var tokens = Tokenize(text);
         var pattern = MatchPattern.Start()
-            .ContinueWithRepeat([TokenType.TEXT], 3).End();
+            .ContinueWithRepeat([TokenType.WORD], 3).End();
 
         var match = tokens.SingleMatch(pattern);
         
@@ -45,8 +45,8 @@ public class ListExtensionsTest
     {
         var tokens = Tokenize(text);
         var pattern = MatchPattern.Start()
-            .ContinueWithRepeat([TokenType.TEXT, TokenType.SPACE], 2)
-            .EndWith(TokenType.TEXT);
+            .ContinueWithRepeat([TokenType.WORD, TokenType.SPACE], 2)
+            .EndWith(TokenType.WORD);
         
         var match = tokens.SingleMatch(pattern);
         
@@ -60,8 +60,8 @@ public class ListExtensionsTest
     {
         var tokens = Tokenize(text);
         var pattern = MatchPattern.Start()
-            .ContinueWithRepeat([TokenType.TEXT, TokenType.SPACE], 2)
-            .EndWith(TokenType.TEXT);
+            .ContinueWithRepeat([TokenType.WORD, TokenType.SPACE], 2)
+            .EndWith(TokenType.WORD);
         
         var match = tokens.SingleMatch(pattern, begin);
         

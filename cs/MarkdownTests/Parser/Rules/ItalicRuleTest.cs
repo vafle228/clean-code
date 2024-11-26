@@ -23,4 +23,16 @@ public class ItalicRuleTest
         node.NodeType.Should().Be(NodeType.ITALIC);
         node.Value.Should().BeEquivalentTo(tokens[1]);
     }
+
+    [TestCase("_Italic tag with spaces_")]
+    public void ItalicRule_Match_MatchWithSpaces(string markdown)
+    {
+        var rule = new ItalicRule();
+        var tokenizer = new MarkdownTokenizer();
+        var tokens = tokenizer.Tokenize(markdown);
+        
+        var node = rule.Match(tokens);
+        
+        
+    }
 }

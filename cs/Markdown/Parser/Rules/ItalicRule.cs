@@ -10,7 +10,7 @@ public class ItalicRule : IParsingRule
     {
         var pattern = MatchPattern
             .StartWith(TokenType.UNDERSCORE)
-            .ContinueWith(TokenType.TEXT)
+            .ContinueWith(TokenType.WORD)
             .EndWith(TokenType.UNDERSCORE);
         var match = tokens.SingleMatch(pattern, begin);
         return match.IsEmpty ? null : new Node(NodeType.ITALIC, tokens[begin + 1], 3);

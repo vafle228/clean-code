@@ -5,27 +5,27 @@ using Markdown.Tokenizer.Tokens;
 namespace MarkdownTests.Tokenizer.Scanners;
 
 [TestFixture]
-public class TextScannerTest
+public class WordScannerTest
 {
     [TestCase("a", 0)]
     [TestCase("_HelloWorld_", 1)]
     [TestCase("VeryBigAndCoolWord", 0)]
-    public void TextScanner_Scan_TokenShouldHaveTextTokenType(string text, int begin)
+    public void WordScanner_Scan_TokenShouldHaveTextTokenType(string text, int begin)
     {
-        var scanner = new TextScanner();
+        var scanner = new WordScanner();
         
         var token = scanner.Scan(text, begin);
 
         token.Should().NotBeNull();
-        token.TokenType.Should().Be(TokenType.TEXT);
+        token.TokenType.Should().Be(TokenType.WORD);
     }
 
     [TestCase("", 0)]
     [TestCase("_", 0)]
     [TestCase("_HelloWorld_", 11)]
-    public void TextScanner_Scan_ShouldScanNullFromText(string text, int begin)
+    public void WordScanner_Scan_ShouldScanNullFromText(string text, int begin)
     {
-        var scanner = new TextScanner();
+        var scanner = new WordScanner();
         var token = scanner.Scan(text, begin);
         token.Should().BeNull();
     }

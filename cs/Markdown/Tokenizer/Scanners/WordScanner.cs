@@ -2,7 +2,7 @@
 
 namespace Markdown.Tokenizer.Scanners;
 
-public class TextScanner : ITokenScanner
+public class WordScanner : ITokenScanner
 {
     public Token? Scan(string markdown, int begin = 0)
     {
@@ -10,7 +10,7 @@ public class TextScanner : ITokenScanner
             .Skip(begin)
             .TakeWhile(CanScan);
         var valueLen = valueIterator.Count();
-        return valueLen == 0 ? null : new Token(TokenType.TEXT, begin, valueLen, markdown);
+        return valueLen == 0 ? null : new Token(TokenType.WORD, begin, valueLen, markdown);
     }
 
     private static bool CanScan(char symbol)

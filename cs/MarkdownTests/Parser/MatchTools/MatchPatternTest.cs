@@ -10,7 +10,7 @@ public class MatchPatternTest
     [Test]
     public void MatchPattern_BuildsCorrectPattern()
     {
-        var patternBody = MatchPattern.StartWith(TokenType.TEXT);
+        var patternBody = MatchPattern.StartWith(TokenType.WORD);
 
         var pattern = patternBody
             .ContinueWith(TokenType.UNDERSCORE)
@@ -18,7 +18,7 @@ public class MatchPatternTest
             .EndWith(TokenType.NEW_LINE);
 
         pattern.Should().BeEquivalentTo([
-            TokenType.TEXT, TokenType.UNDERSCORE,
+            TokenType.WORD, TokenType.UNDERSCORE,
             TokenType.NUMBER, TokenType.NEW_LINE,
         ]);
     }
