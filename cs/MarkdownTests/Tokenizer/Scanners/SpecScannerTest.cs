@@ -13,8 +13,11 @@ public class SpecScannerTest
     public TokenType SpecScanner_Scan_ShouldScanValidTokenTypeFromText(string text, int begin)
     {
         var scanner = new SpecScanner();
+        
         var token = scanner.Scan(text, begin);
-        return token!.TokenType;
+        
+        token.Should().NotBeNull();
+        return token.TokenType;
     }
     
     [TestCase("Hello world", 0)]

@@ -19,7 +19,7 @@ public class MarkdownTokenizer
             var token = scanners
                 .Select(sc => sc.Scan(markdown, begin))
                 .First(token => token is not null);
-            begin += token!.Value.Length; tokenList.Add(token);
+            begin += token!.Length; tokenList.Add(token);
         }
         return tokenList;
     }

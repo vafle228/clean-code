@@ -8,11 +8,10 @@ public class TextScanner : ITokenScanner
     
     public Token? Scan(string markdown, int begin = 0)
     {
-        var textIterator = markdown
+        var valueIterator = markdown
             .Skip(begin)
-            .Select(c => c.ToString())
             .TakeWhile(c => specScanner.Scan(c) == null);
-        var textValue = string.Join("", textIterator);
-        return textValue == string.Empty ? null : new Token(TokenType.TEXT, textValue);
+        var valueLen = valueIterator.Count();
+        return valueLen == 0 ? null : new Token(TokenType.TEXT, begin, valueLen);
     }
 }
