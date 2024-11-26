@@ -1,6 +1,10 @@
-﻿namespace Markdown.Parser.Nodes;
+﻿using Markdown.Tokenizer.Tokens;
 
-public class Node
+namespace Markdown.Parser.Nodes;
+
+public class Node(NodeType nodeType, Token value, int consumed)
 {
-    
+    public Token Value { get; } = value;
+    public int Consumed { get; } = consumed;
+    public NodeType NodeType { get; } = nodeType;
 }
