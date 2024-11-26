@@ -2,9 +2,9 @@
 
 namespace Markdown.Parser.Nodes;
 
-public class Node(NodeType nodeType, Token value, int consumed)
+public class Node(NodeType nodeType, List<Token> value, int consumed)
 {
-    public Token Value { get; } = value;
     public int Consumed { get; } = consumed;
+    public List<Token> Value { get; } = value;
     public NodeType NodeType { get; } = nodeType;
 }

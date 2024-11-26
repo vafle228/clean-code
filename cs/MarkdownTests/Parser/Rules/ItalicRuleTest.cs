@@ -21,7 +21,7 @@ public class ItalicRuleTest
         node.Should().NotBeNull();
         node.Consumed.Should().Be(3);
         node.NodeType.Should().Be(NodeType.ITALIC);
-        node.Value.Should().BeEquivalentTo(tokens[1]);
+        node.Value.Should().BeEquivalentTo([tokens[1]]);
     }
 
     [TestCase("_Italic tag with spaces_")]

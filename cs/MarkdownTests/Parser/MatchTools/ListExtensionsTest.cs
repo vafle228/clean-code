@@ -14,7 +14,7 @@ public class ListExtensionsTest
     {
         var tokens = Tokenize("Some good text here");
         var match = tokens.SingleMatch(Pattern.Empty);
-        match.Should().BeEquivalentTo(Match.ZeroMatch);
+        match.Should().BeEquivalentTo(Match<Token>.ZeroMatch);
     }
 
     [Test]
@@ -26,7 +26,7 @@ public class ListExtensionsTest
 
         var match = tokens.SingleMatch(pattern);
         
-        match.Should().BeEquivalentTo(Match.ZeroMatch);
+        match.Should().BeEquivalentTo(Match<Token>.ZeroMatch);
     }
 
     [Test]
@@ -38,7 +38,7 @@ public class ListExtensionsTest
         
         var match = tokens.SingleMatch(pattern);
         
-        match.Should().BeEquivalentTo(Match.ZeroMatch);
+        match.Should().BeEquivalentTo(Match<Token>.ZeroMatch);
     }
 
     [Test]
@@ -51,7 +51,7 @@ public class ListExtensionsTest
         
         var match = tokens.SingleMatch(pattern);
         
-        match.Should().NotBe(Match.ZeroMatch);
+        match.Should().NotBe(Match<Token>.ZeroMatch);
         match.Start.Should().Be(0);
         match.Length.Should().Be(tokens.Count);
     }
@@ -66,7 +66,7 @@ public class ListExtensionsTest
         
         var match = tokens.SingleMatch(pattern, 2);
         
-        match.Should().NotBe(Match.ZeroMatch);
+        match.Should().NotBe(Match<Token>.ZeroMatch);
         match.Start.Should().Be(2);
         match.Length.Should().Be(pattern.Count);
     }
@@ -96,7 +96,7 @@ public class ListExtensionsTest
         
         var match = tokens.FirstSingleMatch([wordPattern, twoWordsPattern]);
         
-        match.Should().NotBeEquivalentTo(Match.ZeroMatch);
+        match.Should().NotBeEquivalentTo(Match<Token>.ZeroMatch);
         match.Start.Should().Be(0);
         match.Length.Should().Be(1);
     }
