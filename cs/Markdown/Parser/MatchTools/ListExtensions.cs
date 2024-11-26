@@ -20,22 +20,20 @@ public static class ListExtensions
 
     public static List<Match> KleenStarMatch(this List<Token> tokens, Pattern pattern, int begin = 0)
     {
-        if (pattern.Count == 0) return [];
-        if (tokens.Count - begin < pattern.Count) return [];
-        
         List<Match> matches = [];
         while (true)
         {
             var match = tokens.SingleMatch(pattern, begin);
             if (match.IsEmpty) return matches;
-            
-            begin += match.Length;
-            matches.Add(match);
+            begin += match.Length; matches.Add(match);
         }
     }
 
-    public static List<Match> FirstSingleMatch(this List<Token> tokens, List<Pattern> pattern, int begin = 0)
+    public static Match FirstSingleMatch(this List<Token> tokens, List<Pattern> patterns, int begin = 0)
     {
-        return [];
+        var match = patterns
+            .Select(pattern => tokens.SingleMatch(pattern, begin))
+            .FirstOrDefault(match => !match.IsEmpty, Match.ZeroMatch);
+        return match;
     }
 }

@@ -9,18 +9,18 @@ namespace MarkdownTests.Parser.MatchTools;
 [TestFixture]
 public class ListExtensionsTest
 {
-    [TestCase("Some good text here")]
-    public void ListExtensions_SingleMatch_EmptyPatternShouldReturnZeroMatch(string text)
+    [Test]
+    public void ListExtensions_SingleMatch_EmptyPatternShouldReturnZeroMatch()
     {
-        var tokens = Tokenize(text);
+        var tokens = Tokenize("Some good text here");
         var match = tokens.SingleMatch(Pattern.Empty);
         match.Should().BeEquivalentTo(Match.ZeroMatch);
     }
 
-    [TestCase("Word")]
-    public void ListExtensions_SingleMatch_ReturnZeroMatchOnBiggerPattern(string text)
+    [Test]
+    public void ListExtensions_SingleMatch_ReturnZeroMatchOnBiggerPattern()
     {
-        var tokens = Tokenize(text);
+        var tokens = Tokenize("Word");
         var pattern = MatchPattern.Start()
             .ContinueWithRepeat([TokenType.WORD], 3).End();
 
@@ -29,10 +29,10 @@ public class ListExtensionsTest
         match.Should().BeEquivalentTo(Match.ZeroMatch);
     }
 
-    [TestCase("Text with nothing to match")]
-    public void ListExtensions_SingleMatch_ReturnZeroMatchWhenThereIsNoMatch(string text)
+    [Test]
+    public void ListExtensions_SingleMatch_ReturnZeroMatchWhenThereIsNoMatch()
     {
-        var tokens = Tokenize(text);
+        var tokens = Tokenize("Text with nothing to match");
         var pattern = MatchPattern
             .StartWith(TokenType.NUMBER).End();
         
@@ -41,10 +41,10 @@ public class ListExtensionsTest
         match.Should().BeEquivalentTo(Match.ZeroMatch);
     }
 
-    [TestCase("Text with match")]
-    public void ListExtensions_SingleMatch_ReturnMatchWhenThereIsMatch(string text)
+    [Test]
+    public void ListExtensions_SingleMatch_ReturnMatchWhenThereIsMatch()
     {
-        var tokens = Tokenize(text);
+        var tokens = Tokenize("Text with match");
         var pattern = MatchPattern.Start()
             .ContinueWithRepeat([TokenType.WORD, TokenType.SPACE], 2)
             .EndWith(TokenType.WORD);
@@ -55,20 +55,50 @@ public class ListExtensionsTest
         match.Start.Should().Be(0);
         match.Length.Should().Be(tokens.Count);
     }
-
-    [TestCase("Match with non zero begin", 2)]
-    public void ListExtensions_SingleMatch_ReturnMatchFromGivenBeginning(string text, int begin)
+    
+    [Test]
+    public void ListExtensions_SingleMatch_ReturnMatchFromGivenBeginning()
     {
-        var tokens = Tokenize(text);
+        var tokens = Tokenize("Match with non zero begin");
         var pattern = MatchPattern.Start()
             .ContinueWithRepeat([TokenType.WORD, TokenType.SPACE], 2)
             .EndWith(TokenType.WORD);
         
-        var match = tokens.SingleMatch(pattern, begin);
+        var match = tokens.SingleMatch(pattern, 2);
         
         match.Should().NotBe(Match.ZeroMatch);
-        match.Start.Should().Be(begin);
+        match.Start.Should().Be(2);
         match.Length.Should().Be(pattern.Count);
+    }
+    
+    [Test]
+    public void ListExtensions_KleenStarMatch_ReturnMultipleMatches()
+    {
+        var tokens = Tokenize("123 456 789 ");
+        var pattern = MatchPattern
+            .StartWith(TokenType.NUMBER)
+            .EndWith(TokenType.SPACE);
+        
+        var matches = tokens.KleenStarMatch(pattern);
+        
+        matches.Should().HaveCount(3);
+        matches.Should().OnlyContain(m => m.Length == 2);
+    }
+
+    [Test]
+    public void ListExtensions_FirstSingleMatch_ReturnFirstMatch()
+    {
+        var tokens = Tokenize("Some good text here");
+        var twoWordsPattern = MatchPattern.Start()
+            .ContinueWith([TokenType.WORD, TokenType.SPACE, TokenType.WORD])
+            .End();
+        var wordPattern = MatchPattern.StartWith(TokenType.WORD).End();
+        
+        var match = tokens.FirstSingleMatch([wordPattern, twoWordsPattern]);
+        
+        match.Should().NotBeEquivalentTo(Match.ZeroMatch);
+        match.Start.Should().Be(0);
+        match.Length.Should().Be(1);
     }
 
     private static List<Token> Tokenize(string text)
