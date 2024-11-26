@@ -4,14 +4,15 @@ namespace Markdown.Tokenizer.Scanners;
 
 public class TextScanner : ITokenScanner
 {
-    private readonly SpecScanner specScanner = new();
-    
-    public Token? Scan(string markdown)
+    public Token? Scan(string markdown, int begin = 0)
     {
-        var textValue = markdown
-                .Select(c => c.ToString())
-                .TakeWhile(c => specScanner.Scan(c) != null)
-                .ToString();
-        return textValue == null ? null : new Token(TokenType.TEXT, textValue);
+        var valueIterator = markdown
+            .Skip(begin)
+            .TakeWhile(CanScan);
+        var valueLen = valueIterator.Count();
+        return valueLen == 0 ? null : new Token(TokenType.TEXT, begin, valueLen, markdown);
     }
+
+    private static bool CanScan(char symbol)
+        => !SpecScanner.CanScan(symbol) && !NumberScanner.CanScan(symbol);
 }
