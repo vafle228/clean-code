@@ -7,9 +7,9 @@ namespace MarkdownTests.Tokenizer.Scanners;
 [TestFixture]
 public class TextScannerTest
 {
-    [TestCase(" ", 0)]
-    [TestCase("_Hello world_", 1)]
-    [TestCase("Some thoughts in this text", 0)]
+    [TestCase("a", 0)]
+    [TestCase("_HelloWorld_", 1)]
+    [TestCase("VeryBigAndCoolWord", 0)]
     public void TextScanner_Scan_TokenShouldHaveTextTokenType(string text, int begin)
     {
         var scanner = new TextScanner();
@@ -22,7 +22,7 @@ public class TextScannerTest
 
     [TestCase("", 0)]
     [TestCase("_", 0)]
-    [TestCase("_Hello world_", 12)]
+    [TestCase("_HelloWorld_", 11)]
     public void TextScanner_Scan_ShouldScanNullFromText(string text, int begin)
     {
         var scanner = new TextScanner();

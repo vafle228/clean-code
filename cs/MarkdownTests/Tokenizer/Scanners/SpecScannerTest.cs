@@ -7,6 +7,7 @@ namespace MarkdownTests.Tokenizer.Scanners;
 [TestFixture]
 public class SpecScannerTest
 {
+    [TestCase(" ", 0, ExpectedResult = TokenType.SPACE)]
     [TestCase("\n", 0, ExpectedResult = TokenType.NEW_LINE)]
     [TestCase("_", 0, ExpectedResult = TokenType.UNDERSCORE)]
     [TestCase("Twelfth len _", 12, ExpectedResult = TokenType.UNDERSCORE)]
@@ -20,9 +21,9 @@ public class SpecScannerTest
         return token.TokenType;
     }
     
-    [TestCase("Hello world", 0)]
-    [TestCase("I am regular test", 10)]
-    [TestCase("Big string with big begin number test", 20)]
+    [TestCase("HelloWorld", 0)]
+    [TestCase("IAmRegularTest", 10)]
+    [TestCase("BigStringWithBigBeginNumberTest", 20)]
     public void SpecScanner_Scan_ShouldScanNullFromText(string text, int begin)
     {
         var scanner = new SpecScanner();

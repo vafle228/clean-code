@@ -11,6 +11,7 @@ public class SpecScanner : ITokenScanner
     {
         '_' => new Token(TokenType.UNDERSCORE, begin, 1),
         '\n' => new Token(TokenType.NEW_LINE, begin, 1),
+        ' ' => new Token(TokenType.SPACE, begin, 1),
         _ => null
     };
 }

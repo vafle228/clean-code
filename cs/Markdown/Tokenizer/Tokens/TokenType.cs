@@ -4,5 +4,6 @@ public enum TokenType
 {
     TEXT,
     UNDERSCORE,
-    NEW_LINE,
+    SPACE,
+    NEW_LINE
 }
