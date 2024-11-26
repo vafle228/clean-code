@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Markdown.Parser.MatchTools;
+using Markdown.Parser.MatchTools.Models;
 using Markdown.Tokenizer;
 using Markdown.Tokenizer.Tokens;
 
@@ -12,8 +13,8 @@ public class ListExtensionsTest
     public void ListExtensions_SingleMatch_EmptyPatternShouldReturnZeroMatch(string text)
     {
         var tokens = Tokenize(text);
-        var match = tokens.SingleMatch([]);
-        match.Should().Be(Match.ZeroMatch);
+        var match = tokens.SingleMatch(Pattern.Empty);
+        match.Should().BeEquivalentTo(Match.ZeroMatch);
     }
 
     [TestCase("Word")]
@@ -25,7 +26,7 @@ public class ListExtensionsTest
 
         var match = tokens.SingleMatch(pattern);
         
-        match.Should().Be(Match.ZeroMatch);
+        match.Should().BeEquivalentTo(Match.ZeroMatch);
     }
 
     [TestCase("Text with nothing to match")]
@@ -37,7 +38,7 @@ public class ListExtensionsTest
         
         var match = tokens.SingleMatch(pattern);
         
-        match.Should().Be(Match.ZeroMatch);
+        match.Should().BeEquivalentTo(Match.ZeroMatch);
     }
 
     [TestCase("Text with match")]

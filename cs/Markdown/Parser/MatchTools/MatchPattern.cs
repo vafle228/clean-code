@@ -1,4 +1,5 @@
-﻿using Markdown.Tokenizer.Tokens;
+﻿using Markdown.Parser.MatchTools.Models;
+using Markdown.Tokenizer.Tokens;
 
 namespace Markdown.Parser.MatchTools;
 
@@ -9,40 +10,40 @@ public class MatchPattern
 
     public class PatternBody
     {
-        private readonly List<TokenType> pattern = [];
+        private readonly List<TokenType> patternRaw = [];
         
         public PatternBody(TokenType tokenType) 
-            => pattern.Add(tokenType);
+            => patternRaw.Add(tokenType);
         
         public PatternBody() { }
         
         # region fluent api methods
         public PatternBody ContinueWith(TokenType nextType)
         {
-            pattern.Add(nextType);
+            patternRaw.Add(nextType);
             return this;
         }
 
         public PatternBody ContinueWith(List<TokenType> nextTypes)
         {
-            pattern.AddRange(nextTypes);
+            patternRaw.AddRange(nextTypes);
             return this;
         }
 
         public PatternBody ContinueWithRepeat(List<TokenType> repeatedTypes, int count)
         {
             for (var _ = 0; _ < count; _++)
-                pattern.AddRange(repeatedTypes);
+                ContinueWith(repeatedTypes);
             return this;
         }
 
-        public List<TokenType> EndWith(TokenType endType)
+        public Pattern EndWith(TokenType endType)
         {
-            pattern.Add(endType);
-            return pattern;
+            patternRaw.Add(endType);
+            return End();
         }
         
-        public List<TokenType> End() => pattern;
+        public Pattern End() => new(patternRaw);
         #endregion fluent api methods
     }
 }
