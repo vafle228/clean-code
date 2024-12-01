@@ -1,6 +1,6 @@
-﻿using System.Text;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Markdown.Tokenizer;
+using Markdown.Tokenizer.Tokens;
 
 namespace MarkdownTests.Tokenizer;
 
@@ -44,11 +44,7 @@ public class MarkdownTokenizerTest
     public void MarkdownTokenizer_Tokenize_TokensPresentInCorrectOrder(string markdown)
     {
         var tokenizer = new MarkdownTokenizer();
-        
         var tokens = tokenizer.Tokenize(markdown);
-
-        var resultStringBuilder = tokens
-            .Aggregate(new StringBuilder(), (sb, token) => sb.Append(token.GetValue()));
-        resultStringBuilder.ToString().Should().Be(markdown);
+        tokens.ToText().Should().Be(markdown);
     }
 }

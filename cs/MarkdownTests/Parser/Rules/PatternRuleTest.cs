@@ -1,9 +1,10 @@
 ﻿using FluentAssertions;
+using Markdown.Parser.Nodes;
 using Markdown.Parser.Rules;
 using Markdown.Tokenizer;
 using Markdown.Tokenizer.Tokens;
 
-namespace MarkdownTests.Parser.MatchTools;
+namespace MarkdownTests.Parser.Rules;
 
 [TestFixture]
 public class PatternRuleTest
@@ -16,11 +17,10 @@ public class PatternRuleTest
         var tokens = tokenizer.Tokenize("_");
         var rule = new PatternRule([TokenType.UNDERSCORE]);
         
-        var node = rule.Match(tokens);
+        var node = rule.Match(tokens) as TextNode;
         
         node.Should().NotBeNull();
-        node.Value.Should().NotBeNull();
-        node.Value.ToList().Should().BeEquivalentTo(tokens);
+        node.Tokens.Should().BeEquivalentTo(tokens);
     }
 
     [Test]
@@ -29,10 +29,9 @@ public class PatternRuleTest
         var tokens = tokenizer.Tokenize("_\n ");
         var rule = new PatternRule([TokenType.UNDERSCORE, TokenType.NEW_LINE, TokenType.SPACE]);
         
-        var node = rule.Match(tokens);
+        var node = rule.Match(tokens) as TextNode;
         
         node.Should().NotBeNull();
-        node.Value.Should().NotBeNull();
-        node.Value.ToList().Should().BeEquivalentTo(tokens);
+        node.Tokens.Should().BeEquivalentTo(tokens);
     }
 }

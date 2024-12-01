@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Markdown.Parser.Nodes;
 using Markdown.Parser.Rules;
 using Markdown.Tokenizer;
 
@@ -17,12 +18,11 @@ public class TextRuleTest
     {
         var tokens = tokenizer.Tokenize(markdown);
 
-        var node = rule.Match(tokens);
+        var node = rule.Match(tokens) as TextNode;
 
         node.Should().NotBeNull();
         node.Consumed.Should().Be(1);
-        node.Value.Should().NotBeNull();
-        node.Value.ToList()[0].GetValue().Should().Be(markdown);
+        node.Text.Should().Be(markdown);
     }
 
     [TestCase("_")]
@@ -30,7 +30,7 @@ public class TextRuleTest
     public void TextRule_Match_NoTextShouldReturnNull(string markdown)
     {
         var tokens = tokenizer.Tokenize(markdown);
-        var node = rule.Match(tokens);
+        var node = rule.Match(tokens) as TextNode;
         node.Should().BeNull();
     }
 
@@ -41,11 +41,10 @@ public class TextRuleTest
     {
         var tokens = tokenizer.Tokenize(markdown);
         
-        var node = rule.Match(tokens);
+        var node = rule.Match(tokens) as TextNode;
         
         node.Should().NotBeNull();
-        node.Value.Should().NotBeNull();
-        node.Value.ToList().Should().BeEquivalentTo(tokens);
+        node.Tokens.Should().BeEquivalentTo(tokens);
     }
 
     [TestCase("Hello _world_")]
@@ -54,11 +53,10 @@ public class TextRuleTest
     {
         var tokens = tokenizer.Tokenize(markdown);
         
-        var node = rule.Match(tokens, begin);
+        var node = rule.Match(tokens, begin) as TextNode;
         
         node.Should().NotBeNull();
-        node.Value.Should().NotBeNull();
-        node.Value.ToList().Should().NotBeEquivalentTo(tokens);
-        node.Value.ToList().Should().BeEquivalentTo(tokens.Skip(begin).Take(node.Consumed).ToList());
+        node.Tokens.Should().NotBeEquivalentTo(tokens);
+        node.Tokens.Should().BeEquivalentTo(tokens.Skip(begin).Take(node.Consumed).ToList());
     }
 }
