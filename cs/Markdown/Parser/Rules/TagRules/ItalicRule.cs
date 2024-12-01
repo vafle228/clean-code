@@ -1,8 +1,9 @@
 ﻿using Markdown.Parser.Nodes;
+using Markdown.Parser.Rules.TextRules;
 using Markdown.Parser.Rules.Tools;
 using Markdown.Tokenizer.Tokens;
 
-namespace Markdown.Parser.Rules;
+namespace Markdown.Parser.Rules.TagRules;
 
 public class ItalicRule : IParsingRule
 {

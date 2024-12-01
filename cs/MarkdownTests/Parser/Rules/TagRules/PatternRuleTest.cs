@@ -1,10 +1,10 @@
 ﻿using FluentAssertions;
 using Markdown.Parser.Nodes;
-using Markdown.Parser.Rules;
+using Markdown.Parser.Rules.TextRules;
 using Markdown.Tokenizer;
 using Markdown.Tokenizer.Tokens;
 
-namespace MarkdownTests.Parser.Rules;
+namespace MarkdownTests.Parser.Rules.TagRules;
 
 [TestFixture]
 public class PatternRuleTest

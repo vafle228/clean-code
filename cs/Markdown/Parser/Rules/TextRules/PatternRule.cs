@@ -1,7 +1,7 @@
 ﻿using Markdown.Parser.Nodes;
 using Markdown.Tokenizer.Tokens;
 
-namespace Markdown.Parser.Rules;
+namespace Markdown.Parser.Rules.TextRules;
 
 public class PatternRule(List<TokenType> pattern) : IParsingRule
 {
