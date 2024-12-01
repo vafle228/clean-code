@@ -49,7 +49,27 @@ public class ItalicRuleTest
     }
 
     [TestCase("Italic tag tha_t in different wor_ds", 5)]
+    [TestCase("Italic tag t_hat in different words_", 5)]
+    [TestCase("Italic tag that_ in different wo_rds", 5)]
     public void ItalicRule_Match_ShouldNotMatchTagInDifferentWords(string text, int begin)
+    {
+        var tokens = tokenizer.Tokenize(text);
+        var node = rule.Match(tokens, begin) as TagNode;
+        node.Should().BeNull();
+    }
+
+    [TestCase("Italic tag that_ in different_ words", 5)]
+    [TestCase("Italic tag that _ in different words_", 6)]
+    public void ItalicRule_Match_ShouldNotMatchWhenSpaceAfterOpenTag(string text, int begin)
+    {
+        var tokens = tokenizer.Tokenize(text);
+        var node = rule.Match(tokens, begin) as TagNode;
+        node.Should().BeNull();
+    }
+    
+    [TestCase("Italic tag that _in different _words", 6)]
+    [TestCase("Italic tag that _in different words _", 6)]
+    public void ItalicRule_Match_ShouldNotMatchWhenSpaceBeforeCloseTag(string text, int begin)
     {
         var tokens = tokenizer.Tokenize(text);
         var node = rule.Match(tokens, begin) as TagNode;
