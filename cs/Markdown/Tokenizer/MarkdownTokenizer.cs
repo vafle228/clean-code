@@ -6,7 +6,7 @@ namespace Markdown.Tokenizer;
 public class MarkdownTokenizer
 {
     private readonly ITokenScanner[] scanners = [
-        new SpecScanner(), new NumberScanner(), new TextScanner()
+        new SpecScanner(), new NumberScanner(), new WordScanner()
     ];
 
     public List<Token> Tokenize(string markdown)

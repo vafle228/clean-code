@@ -2,8 +2,9 @@
 
 public enum TokenType
 {
-    TEXT,
+    WORD,
     UNDERSCORE,
+    DOUBLE_UNDERSCORE,
     SPACE,
     NEW_LINE,
     NUMBER,
