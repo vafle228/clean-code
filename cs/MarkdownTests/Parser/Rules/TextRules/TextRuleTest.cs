@@ -3,7 +3,7 @@ using Markdown.Parser.Nodes;
 using Markdown.Parser.Rules.TextRules;
 using Markdown.Tokenizer;
 
-namespace MarkdownTests.Parser.Rules.TagRules;
+namespace MarkdownTests.Parser.Rules.TextRules;
 
 [TestFixture]
 public class TextRuleTest

@@ -4,7 +4,7 @@ using Markdown.Parser.Rules.TextRules;
 using Markdown.Tokenizer;
 using Markdown.Tokenizer.Tokens;
 
-namespace MarkdownTests.Parser.Rules.TagRules;
+namespace MarkdownTests.Parser.Rules.TextRules;
 
 [TestFixture]
 public class PatternRuleTest
