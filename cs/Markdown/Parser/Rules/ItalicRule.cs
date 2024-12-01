@@ -6,15 +6,23 @@ namespace Markdown.Parser.Rules;
 
 public class ItalicRule : IParsingRule
 {
-    private readonly List<IParsingRule> pattern =
+    private readonly List<IParsingRule> defaultPattern =
     [
-        new PatternRule([TokenType.UNDERSCORE]),
+        new PatternRule(TokenType.UNDERSCORE),
         new TextRule(),
+        new PatternRule(TokenType.UNDERSCORE),
+    ];
+    
+    private readonly List<IParsingRule> innerTagPattern = 
+    [
+        new PatternRule(TokenType.UNDERSCORE),
+        new PatternRule(TokenType.WORD),
         new PatternRule(TokenType.UNDERSCORE),
     ];
     
     public Node? Match(List<Token> tokens, int begin = 0)
     {
+        var pattern = ChoosePattern(tokens, begin);
         var match = tokens.MatchPattern(pattern, begin);
         
         if (match.Count != pattern.Count) return null;
@@ -24,6 +32,13 @@ public class ItalicRule : IParsingRule
         var startWithWord = textNode.First.TokenType == TokenType.WORD;
             
         return startWithWord && endWithWord ? BuildNode(textNode) : null;
+    }
+
+    private List<IParsingRule> ChoosePattern(List<Token> tokens, int begin = 0)
+    {
+        if (begin != 0 && tokens[begin - 1].TokenType == TokenType.WORD)
+            return innerTagPattern;
+        return defaultPattern;
     }
     
     private static TagNode BuildNode(TextNode textNode) 
