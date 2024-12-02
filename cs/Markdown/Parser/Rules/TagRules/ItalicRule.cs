@@ -1,4 +1,5 @@
 ﻿using Markdown.Parser.Nodes;
+using Markdown.Parser.Rules.BoolRules;
 using Markdown.Parser.Rules.TextRules;
 using Markdown.Parser.Rules.Tools;
 using Markdown.Tokenizer.Tokens;
@@ -7,39 +8,46 @@ namespace Markdown.Parser.Rules.TagRules;
 
 public class ItalicRule : IParsingRule
 {
-    private readonly List<IParsingRule> defaultPattern =
+    private readonly List<IParsingRule> pattern =
     [
         new PatternRule(TokenType.UNDERSCORE),
         new TextRule(),
         new PatternRule(TokenType.UNDERSCORE),
     ];
-    
-    private readonly List<IParsingRule> innerTagPattern = 
-    [
-        new PatternRule(TokenType.UNDERSCORE),
-        new PatternRule(TokenType.WORD),
-        new PatternRule(TokenType.UNDERSCORE),
-    ];
+
+    private readonly OrRule continuesRule = new(
+        PatternRule.DoubleUnderscoreRule(),
+        new OrRule(TokenType.NEW_LINE, TokenType.SPACE)
+    );
     
     public Node? Match(List<Token> tokens, int begin = 0)
     {
-        var pattern = ChoosePattern(tokens, begin);
+        var innerRule = new InWordItalicRule();
+        if (begin != 0 && tokens[begin - 1].TokenType == TokenType.WORD)
+            return innerRule.Match(tokens, begin);
+        return innerRule.Match(tokens, begin) ?? MatchItalic(tokens, begin);
+    }
+
+    private TagNode? MatchItalic(List<Token> tokens, int begin)
+    {
         var match = tokens.MatchPattern(pattern, begin);
         
         if (match.Count != pattern.Count) return null;
         if (match.Second() is not TextNode textNode) return null;
         
+        var resultNode = BuildNode(textNode);
+        
         var endWithWord = textNode.Last.TokenType == TokenType.WORD;
         var startWithWord = textNode.First.TokenType == TokenType.WORD;
-            
-        return startWithWord && endWithWord ? BuildNode(textNode) : null;
+        var hasRightContinues = HasRightContinues(tokens, begin + resultNode.Consumed);
+        
+        return hasRightContinues && endWithWord && startWithWord ? resultNode : null;
     }
 
-    private List<IParsingRule> ChoosePattern(List<Token> tokens, int begin = 0)
+    private bool HasRightContinues(List<Token> tokens, int begin)
     {
-        if (begin != 0 && tokens[begin - 1].TokenType == TokenType.WORD)
-            return innerTagPattern;
-        return defaultPattern;
+        if (tokens.Count == begin) return true;
+        return continuesRule.Match(tokens, begin) is not null;
     }
     
     private static TagNode BuildNode(TextNode textNode) 

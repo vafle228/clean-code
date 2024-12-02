@@ -19,4 +19,7 @@ public class PatternRule(List<TokenType> pattern) : IParsingRule
             .All(pair => pair.First.TokenType == pair.Second);
         return !isMatched ? null : new TextNode(begin, pattern.Count, tokens);
     }
+
+    public static PatternRule DoubleUnderscoreRule()
+        => new([TokenType.UNDERSCORE, TokenType.UNDERSCORE]);
 }

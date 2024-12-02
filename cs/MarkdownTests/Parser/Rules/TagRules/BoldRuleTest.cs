@@ -53,4 +53,37 @@ public class BoldRuleTest
             .BeEquivalentTo([NodeType.TEXT, NodeType.ITALIC, NodeType.TEXT]);
         node.NodeType.Should().Be(NodeType.BOLD);
     }
+    
+    [TestCase("Bold tag in wo__rd__ end", 7, ExpectedResult = "rd")]
+    [TestCase("Bold tag in __wo__rd begin", 6, ExpectedResult = "wo")]
+    [TestCase("Bold tag in w__or__d center", 7, ExpectedResult = "or")]
+    public string BoldRule_Match_ShouldMatchTagInWord(string text, int begin)
+    {
+        var tokens = tokenizer.Tokenize(text);
+        
+        var node = rule.Match(tokens, begin) as TagNode;
+        
+        node.Should().NotBeNull();
+        node.Children.Should().ContainSingle(n => n.NodeType == NodeType.TEXT);
+        return node.Children.First().As<TextNode>().Text;
+    }
+    
+    [TestCase("Italic tag with__123__numbers", 6)]
+    [TestCase("Numbers that separates with underscores 12__34__56", 10)]
+    public void ItalicRule_Match_ShouldNotMatchTextWithNumbers(string text, int begin)
+    {
+        var tokens = tokenizer.Tokenize(text);
+        var node = rule.Match(tokens, begin) as TagNode;
+        node.Should().BeNull();
+    }
+    
+    [TestCase("Italic tag tha__t in different wor__ds", 5)]
+    [TestCase("Italic tag t__hat in different words__", 5)]
+    [TestCase("Italic tag that__ in different wo__rds", 5)]
+    public void ItalicRule_Match_ShouldNotMatchTagInDifferentWords(string text, int begin)
+    {
+        var tokens = tokenizer.Tokenize(text);
+        var node = rule.Match(tokens, begin) as TagNode;
+        node.Should().BeNull();
+    }
 }

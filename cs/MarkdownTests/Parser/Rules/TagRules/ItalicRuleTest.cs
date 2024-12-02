@@ -67,7 +67,7 @@ public class ItalicRuleTest
         node.Should().BeNull();
     }
     
-    // [TestCase("_abc def g_hi", 0)]
+    [TestCase("_abc def g_hi", 0)]
     [TestCase("Italic tag that _in different _words", 6)]
     [TestCase("Italic tag that _in different words _", 6)]
     public void ItalicRule_Match_ShouldNotMatchWhenSpaceBeforeCloseTag(string text, int begin)

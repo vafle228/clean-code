@@ -8,15 +8,23 @@ namespace Markdown.Parser.Rules.TagRules;
 
 public class BoldRule : IParsingRule
 {
-    private readonly List<IParsingRule> pattern =
+    private readonly List<IParsingRule> defaultPattern =
     [
         new PatternRule([TokenType.UNDERSCORE, TokenType.UNDERSCORE]),
         new KleenStarRule(new OrRule(new ItalicRule(), new TextRule())),
         new PatternRule([TokenType.UNDERSCORE, TokenType.UNDERSCORE]),
     ];
+
+    private readonly List<IParsingRule> innerTagPattern =
+    [
+        new PatternRule([TokenType.UNDERSCORE, TokenType.UNDERSCORE]),
+        new KleenStarRule(new OrRule(new ItalicRule(), new PatternRule(TokenType.WORD))),
+        new PatternRule([TokenType.UNDERSCORE, TokenType.UNDERSCORE]),
+    ];
     
     public Node? Match(List<Token> tokens, int begin = 0)
     {
+        var pattern = ChoosePattern(tokens, begin);
         var match = tokens.MatchPattern(pattern, begin);
         
         if (match.Count != pattern.Count) return null;
@@ -26,6 +34,13 @@ public class BoldRule : IParsingRule
         var startWithWord = StartWithWordOrItalic(specNode.Children.First());
 
         return endWithWord && startWithWord ? BuildNode(specNode) : null;
+    }
+    
+    private List<IParsingRule> ChoosePattern(List<Token> tokens, int begin = 0)
+    {
+        if (begin != 0 && tokens[begin - 1].TokenType == TokenType.WORD)
+            return innerTagPattern;
+        return defaultPattern;
     }
 
     private static bool StartWithWordOrItalic(Node node)
