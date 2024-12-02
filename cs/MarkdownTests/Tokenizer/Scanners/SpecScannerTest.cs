@@ -8,6 +8,7 @@ namespace MarkdownTests.Tokenizer.Scanners;
 public class SpecScannerTest
 {
     [TestCase(" ", ExpectedResult = TokenType.SPACE)]
+    [TestCase("#", ExpectedResult = TokenType.HASH_TAG)]
     [TestCase("\n", ExpectedResult = TokenType.NEW_LINE)]
     [TestCase("_", ExpectedResult = TokenType.UNDERSCORE)]
     [TestCase("Twelfth len _", 12, ExpectedResult = TokenType.UNDERSCORE)]

@@ -7,4 +7,5 @@ public enum TokenType
     SPACE,
     NEW_LINE,
     NUMBER,
+    HASH_TAG,
 }

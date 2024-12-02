@@ -28,12 +28,4 @@ public static class ListMatchExtensions
             begin += node.Consumed; nodes.Add(node);
         }
     }
-
-    public static Node? FirstMatch(this List<Token> tokens, List<IParsingRule> patterns, int begin = 0)
-    {
-        var match = patterns
-            .Select(rule => rule.Match(tokens, begin))
-            .FirstOrDefault(node => node is not null, null);
-        return match;
-    }
 }

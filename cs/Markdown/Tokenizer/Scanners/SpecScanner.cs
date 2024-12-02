@@ -19,6 +19,7 @@ public class SpecScanner : ITokenScanner
     private static TokenType? GetTokenType(char symbol) => symbol switch
     {
         ' ' => TokenType.SPACE,
+        '#' => TokenType.HASH_TAG,
         '\n' => TokenType.NEW_LINE,
         '_' => TokenType.UNDERSCORE,
         _ => null
