@@ -76,7 +76,8 @@ public class ItalicRuleTest
         var node = rule.Match(tokens, begin) as TagNode;
         node.Should().BeNull();
     }
-
+    
+    [TestCase("abc _def__", 2)]
     [TestCase("Not pair __symbols case_", 4)]
     [TestCase("Not pair _symbols case__", 4)]
     public void ItalicRule_Match_DifferentUnderscoresShouldNotMatch(string text, int begin)

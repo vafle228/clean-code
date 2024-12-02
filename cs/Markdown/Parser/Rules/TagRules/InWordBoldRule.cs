@@ -23,6 +23,6 @@ public class InWordBoldRule : IParsingRule
         if (match.Count != pattern.Count) return null;
         if (match.Second() is not SpecNode specNode) return null;
 
-        return new TagNode(NodeType.BOLD, specNode.Children, specNode.Consumed + 2);
+        return new TagNode(NodeType.BOLD, specNode.Children, specNode.Consumed + 4);
     }
 }
