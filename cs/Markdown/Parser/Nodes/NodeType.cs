@@ -4,5 +4,7 @@ public enum NodeType
 {
     ITALIC,
     BOLD,
-    TEXT
+    TEXT,
+    
+    SPECIAL,
 }

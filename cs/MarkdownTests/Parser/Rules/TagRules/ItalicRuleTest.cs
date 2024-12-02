@@ -25,12 +25,12 @@ public class ItalicRuleTest
         node.Children.First().As<TextNode>().Text.Should().Be(text);
     }
 
-    [TestCase("Italic tag with_123_numbers")]
-    [TestCase("Numbers that separates with underscores 12_34_56")]
-    public void ItalicRule_Match_ShouldNotMatchTextWithNumbers(string text)
+    [TestCase("Italic tag with_123_numbers", 6)]
+    [TestCase("Numbers that separates with underscores 12_34_56", 10)]
+    public void ItalicRule_Match_ShouldNotMatchTextWithNumbers(string text, int begin)
     {
         var tokens = tokenizer.Tokenize(text);
-        var node = rule.Match(tokens) as TagNode;
+        var node = rule.Match(tokens, begin) as TagNode;
         node.Should().BeNull();
     }
     
@@ -67,6 +67,7 @@ public class ItalicRuleTest
         node.Should().BeNull();
     }
     
+    // [TestCase("_abc def g_hi", 0)]
     [TestCase("Italic tag that _in different _words", 6)]
     [TestCase("Italic tag that _in different words _", 6)]
     public void ItalicRule_Match_ShouldNotMatchWhenSpaceBeforeCloseTag(string text, int begin)

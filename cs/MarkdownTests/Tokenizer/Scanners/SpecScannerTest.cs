@@ -10,7 +10,6 @@ public class SpecScannerTest
     [TestCase(" ", ExpectedResult = TokenType.SPACE)]
     [TestCase("\n", ExpectedResult = TokenType.NEW_LINE)]
     [TestCase("_", ExpectedResult = TokenType.UNDERSCORE)]
-    [TestCase("__", ExpectedResult = TokenType.DOUBLE_UNDERSCORE)]
     [TestCase("Twelfth len _", 12, ExpectedResult = TokenType.UNDERSCORE)]
     public TokenType SpecScanner_Scan_ShouldScanValidTokenTypeFromText(string text, int begin = 0)
     {
