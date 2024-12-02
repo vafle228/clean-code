@@ -37,11 +37,11 @@ public class ItalicRule : IParsingRule
         
         var resultNode = BuildNode(textNode);
         
-        var endWithWord = textNode.Last.TokenType == TokenType.WORD;
-        var startWithWord = textNode.First.TokenType == TokenType.WORD;
+        var endWithNonSpace = textNode.Last.TokenType != TokenType.SPACE;
+        var startWithNonSpace = textNode.First.TokenType != TokenType.SPACE;
         var hasRightContinues = HasRightContinues(tokens, begin + resultNode.Consumed);
         
-        return hasRightContinues && endWithWord && startWithWord ? resultNode : null;
+        return hasRightContinues && endWithNonSpace && startWithNonSpace ? resultNode : null;
     }
 
     private bool HasRightContinues(List<Token> tokens, int begin)
