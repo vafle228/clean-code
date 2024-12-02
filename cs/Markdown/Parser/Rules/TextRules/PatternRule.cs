@@ -1,7 +1,7 @@
 ﻿using Markdown.Parser.Nodes;
 using Markdown.Tokenizer.Tokens;
 
-namespace Markdown.Parser.Rules;
+namespace Markdown.Parser.Rules.TextRules;
 
 public class PatternRule(List<TokenType> pattern) : IParsingRule
 {
@@ -19,4 +19,7 @@ public class PatternRule(List<TokenType> pattern) : IParsingRule
             .All(pair => pair.First.TokenType == pair.Second);
         return !isMatched ? null : new TextNode(begin, pattern.Count, tokens);
     }
+
+    public static PatternRule DoubleUnderscoreRule()
+        => new([TokenType.UNDERSCORE, TokenType.UNDERSCORE]);
 }
