@@ -68,19 +68,19 @@ public class BoldRuleTest
         return node.Children.First().As<TextNode>().Text;
     }
     
-    [TestCase("Italic tag with__123__numbers", 6)]
+    [TestCase("Bold tag with__123__numbers", 6)]
     [TestCase("Numbers that separates with underscores 12__34__56", 10)]
-    public void ItalicRule_Match_ShouldNotMatchTextWithNumbers(string text, int begin)
+    public void BoldRule_Match_ShouldNotMatchTextWithNumbers(string text, int begin)
     {
         var tokens = tokenizer.Tokenize(text);
         var node = rule.Match(tokens, begin) as TagNode;
         node.Should().BeNull();
     }
     
-    [TestCase("Italic tag tha__t in different wor__ds", 5)]
-    [TestCase("Italic tag t__hat in different words__", 5)]
-    [TestCase("Italic tag that__ in different wo__rds", 5)]
-    public void ItalicRule_Match_ShouldNotMatchTagInDifferentWords(string text, int begin)
+    [TestCase("Bold tag tha__t in different wor__ds", 5)]
+    [TestCase("Bold tag t__hat in different words__", 5)]
+    [TestCase("Bold tag that__ in different wo__rds", 5)]
+    public void BoldRule_Match_ShouldNotMatchTagInDifferentWords(string text, int begin)
     {
         var tokens = tokenizer.Tokenize(text);
         var node = rule.Match(tokens, begin) as TagNode;

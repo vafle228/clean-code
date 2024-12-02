@@ -8,39 +8,43 @@ namespace Markdown.Parser.Rules.TagRules;
 
 public class BoldRule : IParsingRule
 {
-    private readonly List<IParsingRule> defaultPattern =
+    private readonly List<IParsingRule> pattern =
     [
-        new PatternRule([TokenType.UNDERSCORE, TokenType.UNDERSCORE]),
+        PatternRule.DoubleUnderscoreRule(),
         new KleenStarRule(new OrRule(new ItalicRule(), new TextRule())),
-        new PatternRule([TokenType.UNDERSCORE, TokenType.UNDERSCORE]),
+        PatternRule.DoubleUnderscoreRule(),
     ];
 
-    private readonly List<IParsingRule> innerTagPattern =
-    [
-        new PatternRule([TokenType.UNDERSCORE, TokenType.UNDERSCORE]),
-        new KleenStarRule(new OrRule(new ItalicRule(), new PatternRule(TokenType.WORD))),
-        new PatternRule([TokenType.UNDERSCORE, TokenType.UNDERSCORE]),
-    ];
-    
+    private readonly OrRule continuesRule = new(TokenType.NEW_LINE, TokenType.SPACE);
+
     public Node? Match(List<Token> tokens, int begin = 0)
     {
-        var pattern = ChoosePattern(tokens, begin);
+        var innerRule = new InWordBoldRule();
+        if (begin != 0 && tokens[begin - 1].TokenType == TokenType.WORD)
+            return innerRule.Match(tokens, begin);
+        return innerRule.Match(tokens, begin) ?? MatchBold(tokens, begin);
+    }
+    
+    private TagNode? MatchBold(List<Token> tokens, int begin = 0)
+    {
         var match = tokens.MatchPattern(pattern, begin);
         
         if (match.Count != pattern.Count) return null;
         if (match.Second() is not SpecNode specNode) return null;
         
+        var resultNode = BuildNode(specNode);
+        
         var endWithWord = EndWithWordOrItalic(specNode.Children.Last());
         var startWithWord = StartWithWordOrItalic(specNode.Children.First());
+        var hasRightContinues = HasRightContinues(tokens, begin + resultNode.Consumed);
 
-        return endWithWord && startWithWord ? BuildNode(specNode) : null;
+        return endWithWord && startWithWord && hasRightContinues ? resultNode : null;
     }
     
-    private List<IParsingRule> ChoosePattern(List<Token> tokens, int begin = 0)
+    private bool HasRightContinues(List<Token> tokens, int begin)
     {
-        if (begin != 0 && tokens[begin - 1].TokenType == TokenType.WORD)
-            return innerTagPattern;
-        return defaultPattern;
+        if (tokens.Count == begin) return true;
+        return continuesRule.Match(tokens, begin) is not null;
     }
 
     private static bool StartWithWordOrItalic(Node node)
@@ -56,5 +60,5 @@ public class BoldRule : IParsingRule
     }
 
     private static TagNode BuildNode(SpecNode specNode) 
-        => new(NodeType.BOLD, specNode.Children, specNode.Consumed + 2);
+        => new(NodeType.BOLD, specNode.Children, specNode.Consumed + 4);
 }
