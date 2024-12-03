@@ -8,25 +8,27 @@ namespace Markdown.Parser.Rules.TagRules;
 
 public class ParagraphRule : IParsingRule
 {
-    private static readonly OrRule SentenceValues = new([
-        new ItalicRule(), new BoldRule(), new TextRule(), 
-        PatternRule.DoubleUnderscoreRule(), 
-        new OrRule(TokenType.NUMBER, TokenType.UNDERSCORE)
-    ]);
-
-    private readonly List<IParsingRule> pattern =
-    [
-        new KleenStarRule(SentenceValues),
-        new PatternRule(TokenType.NEW_LINE),
-    ];
-    
     public Node? Match(List<Token> tokens, int begin = 0)
     {
-        var match = tokens.MatchPattern(pattern, begin);
+        var tagRules = new OrRule([
+            new ItalicRule(), new BoldRule(), new TextRule(),
+        ]);
+        var tokenRules = new OrRule([
+            PatternRule.DoubleUnderscoreRule(),
+            new PatternRule(TokenType.NUMBER),
+            new PatternRule(TokenType.UNDERSCORE)
+        ]);
         
-        if (match.Count != pattern.Count) return null;
-        if (match.First() is not SpecNode specNode) return null;
+        var resultRule = new AndRule([
+            new KleenStarRule(new OrRule(tagRules, tokenRules)),
+            new PatternRule(TokenType.NEW_LINE)
+        ]);
+        return resultRule.Match(tokens, begin) is SpecNode node ? BuildNode(node) : null;
+    }
 
-        return new TagNode(NodeType.PARAGRAPH, specNode.Children, specNode.Consumed + 1);
+    private static TagNode BuildNode(SpecNode node)
+    {
+        var valueNode = (node.Children.First() as SpecNode)!;
+        return new TagNode(NodeType.PARAGRAPH, valueNode.Children, node.Consumed); 
     }
 }
