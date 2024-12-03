@@ -8,12 +8,12 @@ namespace Markdown.Parser.Rules.TagRules;
 
 public class ItalicRule : IParsingRule
 {
-    private readonly List<IParsingRule> pattern =
-    [
-        new PatternRule(TokenType.UNDERSCORE),
-        new TextRule(),
-        new PatternRule(TokenType.UNDERSCORE),
-    ];
+    // private readonly List<IParsingRule> pattern =
+    // [
+    //     new PatternRule(TokenType.UNDERSCORE),
+    //     new TextRule(),
+    //     new PatternRule(TokenType.UNDERSCORE),
+    // ];
 
     private readonly OrRule continuesRule = new(
         PatternRule.DoubleUnderscoreRule(),
@@ -22,14 +22,20 @@ public class ItalicRule : IParsingRule
     
     public Node? Match(List<Token> tokens, int begin = 0)
     {
-        var innerRule = new InWordItalicRule();
-        if (begin != 0 && tokens[begin - 1].TokenType == TokenType.WORD)
-            return innerRule.Match(tokens, begin);
-        return innerRule.Match(tokens, begin) ?? MatchItalic(tokens, begin);
+        return !InWordItalicRule.IsTagInWord(tokens, begin)
+            ? MatchItalic(tokens, begin)
+            : new InWordItalicRule().Match(tokens, begin);
     }
 
     private TagNode? MatchItalic(List<Token> tokens, int begin)
     {
+        List<IParsingRule> pattern =
+        [
+            new PatternRule(TokenType.UNDERSCORE),
+            new TextRule(),
+            new PatternRule(TokenType.UNDERSCORE),
+        ];
+        
         var match = tokens.MatchPattern(pattern, begin);
         
         if (match.Count != pattern.Count) return null;

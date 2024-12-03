@@ -8,31 +8,36 @@ namespace Markdown.Parser.Rules.TagRules;
 
 public class InWordItalicRule : IParsingRule
 {
-    private readonly List<IParsingRule> pattern = 
+    private readonly List<TokenType> possibleContinues =
     [
-        new PatternRule(TokenType.UNDERSCORE),
-        new PatternRule(TokenType.WORD),
-        new PatternRule(TokenType.UNDERSCORE),
+        TokenType.NEW_LINE, TokenType.SPACE, TokenType.WORD
     ];
     
-    private readonly OrRule continuesRule = new(
-        [TokenType.NEW_LINE, TokenType.SPACE, TokenType.WORD]
-    );
-    
     public Node? Match(List<Token> tokens, int begin = 0)
-    {
-        var match = tokens.MatchPattern(pattern, begin);
-        
-        if (match.Count != pattern.Count) return null;
-        if (match.Second() is not TextNode textNode) return null;
-        if (!HasRightContinues(tokens, begin + textNode.Consumed + 2)) return null;
+    { 
+        var pattern = new AndRule([
+            new PatternRule(TokenType.UNDERSCORE), 
+            new PatternRule(TokenType.WORD), 
+            new PatternRule(TokenType.UNDERSCORE),
+        ]);
+        var continuesRule = new OrRule(possibleContinues);
 
-        return new TagNode(NodeType.ITALIC, textNode, textNode.Consumed + 2);
+        var contRule = new ContinuesRule(pattern, continuesRule);
+        return contRule.Match(tokens, begin) is SpecNode node ? BuildNode(node) : null;
     }
+
+    private static TagNode BuildNode(SpecNode node)
+        => new(NodeType.ITALIC, node.Children.Second()!, node.Consumed);
     
-    private bool HasRightContinues(List<Token> tokens, int begin)
+    public static bool IsTagInWord(List<Token> tokens, int begin = 0)
     {
-        if (tokens.Count == begin) return true;
-        return continuesRule.Match(tokens, begin) is not null;
+        if (begin != 0 && tokens[begin - 1].TokenType == TokenType.WORD) 
+            return true;
+        
+        var inStartRule = new PatternRule([
+            TokenType.UNDERSCORE, TokenType.WORD, 
+            TokenType.UNDERSCORE, TokenType.WORD,
+        ]);
+        return inStartRule.Match(tokens, begin) is not null;
     }
 }
