@@ -3,7 +3,7 @@ using Markdown.Parser.Rules.TextRules;
 using Markdown.Parser.Rules.Tools;
 using Markdown.Tokenizer.Tokens;
 
-namespace Markdown.Parser.Rules.BoolRules;
+namespace Markdown.Parser.Rules.SpecialRules;
 
 public class AndRule(List<IParsingRule> pattern) : IParsingRule
 {

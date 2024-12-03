@@ -2,7 +2,7 @@
 using Markdown.Parser.Rules.TextRules;
 using Markdown.Tokenizer.Tokens;
 
-namespace Markdown.Parser.Rules.BoolRules;
+namespace Markdown.Parser.Rules.SpecialRules;
 
 public class OrRule(List<IParsingRule> rules) : IParsingRule
 {
