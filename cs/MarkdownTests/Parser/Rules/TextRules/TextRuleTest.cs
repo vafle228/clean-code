@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
 using Markdown.Parser.Nodes;
-using Markdown.Parser.Rules;
+using Markdown.Parser.Rules.TextRules;
 using Markdown.Tokenizer;
 
-namespace MarkdownTests.Parser.Rules;
+namespace MarkdownTests.Parser.Rules.TextRules;
 
 [TestFixture]
 public class TextRuleTest
@@ -44,7 +44,7 @@ public class TextRuleTest
         var node = rule.Match(tokens) as TextNode;
         
         node.Should().NotBeNull();
-        node.Tokens.Should().BeEquivalentTo(tokens);
+        node.Tokens.Should().BeEquivalentTo(tokens, options => options.WithStrictOrdering());
     }
 
     [TestCase("Hello _world_")]

@@ -4,5 +4,9 @@ public enum NodeType
 {
     ITALIC,
     BOLD,
-    TEXT
+    TEXT,
+    HEADLINE,
+    PARAGRAPH,
+    
+    SPECIAL,
 }
