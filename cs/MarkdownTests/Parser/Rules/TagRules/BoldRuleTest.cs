@@ -48,9 +48,9 @@ public class BoldRuleTest
         var node = rule.Match(tokens) as TagNode;
         
         node.Should().NotBeNull();
-        node.Children.Select(n => n.NodeType).Should()
-            .HaveCount(3).And
-            .BeEquivalentTo([NodeType.TEXT, NodeType.ITALIC, NodeType.TEXT]);
+        node.Children.Select(n => n.NodeType).Should().BeEquivalentTo(
+            [NodeType.TEXT, NodeType.ITALIC, NodeType.TEXT], 
+            options => options.WithStrictOrdering());
         node.NodeType.Should().Be(NodeType.BOLD);
     }
     

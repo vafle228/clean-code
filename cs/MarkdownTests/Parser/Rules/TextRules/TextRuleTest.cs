@@ -44,7 +44,7 @@ public class TextRuleTest
         var node = rule.Match(tokens) as TextNode;
         
         node.Should().NotBeNull();
-        node.Tokens.Should().BeEquivalentTo(tokens);
+        node.Tokens.Should().BeEquivalentTo(tokens, options => options.WithStrictOrdering());
     }
 
     [TestCase("Hello _world_")]

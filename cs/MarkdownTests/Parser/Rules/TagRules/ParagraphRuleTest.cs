@@ -37,9 +37,9 @@ public class ParagraphRuleTest
         node.Should().NotBeNull();
         node.NodeType.Should().Be(NodeType.PARAGRAPH);
         node.Consumed.Should().Be(tokens.Count);
-        node.Children.Select(n => n.NodeType)
-            .Should().HaveCount(5).And
-            .BeEquivalentTo([NodeType.TEXT, NodeType.ITALIC, NodeType.TEXT, NodeType.BOLD, NodeType.TEXT]);
+        node.Children.Select(n => n.NodeType).Should().BeEquivalentTo(
+            [NodeType.TEXT, NodeType.ITALIC, NodeType.TEXT, NodeType.BOLD, NodeType.TEXT],
+            options => options.WithStrictOrdering());
         node.Children.First(n => n.NodeType == NodeType.BOLD).ToText().Should().Be("bold");
         node.Children.First(n => n.NodeType == NodeType.ITALIC).ToText().Should().Be("italic");
     }
