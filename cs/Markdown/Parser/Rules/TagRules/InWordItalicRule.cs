@@ -22,8 +22,8 @@ public class InWordItalicRule : IParsingRule
         ]);
         var continuesRule = new OrRule(possibleContinues);
 
-        var contRule = new ContinuesRule(pattern, continuesRule);
-        return contRule.Match(tokens, begin) is SpecNode node ? BuildNode(node) : null;
+        var resultRule = new ContinuesRule(pattern, continuesRule);
+        return resultRule.Match(tokens, begin) is SpecNode node ? BuildNode(node) : null;
     }
 
     private static TagNode BuildNode(SpecNode node)
