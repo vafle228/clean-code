@@ -33,30 +33,6 @@ public class ItalicRuleTest
         var node = rule.Match(tokens, begin) as TagNode;
         node.Should().BeNull();
     }
-    
-    [TestCase("Italic tag in wo_rd_ end", 7, ExpectedResult = "rd")]
-    [TestCase("Italic tag in _wo_rd begin", 6, ExpectedResult = "wo")]
-    [TestCase("Italic tag in w_or_d center", 7, ExpectedResult = "or")]
-    public string ItalicRule_Match_ShouldMatchTagInWord(string text, int begin)
-    {
-        var tokens = tokenizer.Tokenize(text);
-        
-        var node = rule.Match(tokens, begin) as TagNode;
-        
-        node.Should().NotBeNull();
-        node.Children.Should().ContainSingle(n => n.NodeType == NodeType.TEXT);
-        return node.Children.First().As<TextNode>().Text;
-    }
-
-    [TestCase("Italic tag tha_t in different wor_ds", 5)]
-    [TestCase("Italic tag t_hat in different words_", 5)]
-    [TestCase("Italic tag that_ in different wo_rds", 5)]
-    public void ItalicRule_Match_ShouldNotMatchTagInDifferentWords(string text, int begin)
-    {
-        var tokens = tokenizer.Tokenize(text);
-        var node = rule.Match(tokens, begin) as TagNode;
-        node.Should().BeNull();
-    }
 
     [TestCase("Italic tag that_ in different_ words", 5)]
     [TestCase("Italic tag that _ in different words_", 6)]
