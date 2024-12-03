@@ -27,10 +27,10 @@ public class InWordBoldRule : IParsingRule
         return resultRule.Match(tokens, begin) is SpecNode node ? BuildNode(node) : null;
     }
 
-    private static TagNode? BuildNode(SpecNode node)
+    private static TagNode BuildNode(SpecNode node)
     {
-        var valueNode = node.Children.Second() as SpecNode;
-        return valueNode is null ? null : new TagNode(NodeType.BOLD, valueNode.Children, node.Consumed);
+        var valueNode = (node.Children.Second() as SpecNode)!;
+        return new TagNode(NodeType.BOLD, valueNode.Children, node.Consumed);
     }
     
     public static bool IsTagInWord(List<Token> tokens, int begin = 0)
