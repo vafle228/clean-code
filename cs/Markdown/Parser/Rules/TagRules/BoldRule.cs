@@ -20,7 +20,7 @@ public class BoldRule : IParsingRule
         var valueRule = new OrRule(new ItalicRule(), new TextRule());
         var pattern = new AndRule([
             PatternRule.DoubleUnderscoreRule(),
-            BorderRule.NoSpaceOnBorderRule(new KleenStarRule(valueRule)),
+            new ConditionalRule(new KleenStarRule(valueRule), HasRightBorder),
             PatternRule.DoubleUnderscoreRule()
         ]);
         var continuesRule = new OrRule(TokenType.NEW_LINE, TokenType.SPACE);
@@ -29,9 +29,26 @@ public class BoldRule : IParsingRule
         return resultRule.Match(tokens, begin) is SpecNode specNode ? BuildNode(specNode) : null;
     }
 
-    private static TagNode? BuildNode(SpecNode node)
+    private static TagNode BuildNode(SpecNode node)
     {
-        var valueNode = node.Children.Second() as SpecNode;
-        return valueNode is null ? null : new TagNode(NodeType.BOLD, valueNode.Children, node.Consumed);
+        var valueNode = (node.Children.Second() as SpecNode)!;
+        return new TagNode(NodeType.BOLD, valueNode.Children, node.Consumed);
+    }
+
+    private static bool HasRightBorder(Node node) 
+        => node is SpecNode specNode 
+           && TextDontEndWithSpace(specNode.Children.Last()) 
+           && TextDontStartWithSpace(specNode.Children.First());
+    
+    private static bool TextDontStartWithSpace(Node node)
+    {
+        if (node.NodeType != NodeType.TEXT) return true;
+        return node is TextNode textNode && textNode.First.TokenType != TokenType.SPACE;
+    }
+
+    private static bool TextDontEndWithSpace(Node node)
+    {
+        if (node.NodeType != NodeType.TEXT) return true;
+        return node is TextNode textNode && textNode.Last.TokenType != TokenType.SPACE;
     }
 }

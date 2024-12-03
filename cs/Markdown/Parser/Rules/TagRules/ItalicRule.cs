@@ -19,7 +19,7 @@ public class ItalicRule : IParsingRule
     {
         var pattern = new AndRule([
             new PatternRule(TokenType.UNDERSCORE),
-            BorderRule.NoSpaceOnBorderRule(new TextRule()),
+            new ConditionalRule(new TextRule(), HasRightBorders),
             new PatternRule(TokenType.UNDERSCORE),
         ]);
         var continuesRule = new OrRule([
@@ -31,7 +31,12 @@ public class ItalicRule : IParsingRule
         var resultRule = new ContinuesRule(pattern, continuesRule);
         return resultRule.Match(tokens, begin) is SpecNode specNode ? BuildNode(specNode) : null;
     }
-    
+
     private static TagNode BuildNode(SpecNode node) 
         => new(NodeType.ITALIC, node.Children.Second()!, node.Consumed);
+
+    private static bool HasRightBorders(Node node)
+        => node is TextNode textNode
+           && textNode.Last.TokenType != TokenType.SPACE
+           && textNode.First.TokenType != TokenType.SPACE;
 }
