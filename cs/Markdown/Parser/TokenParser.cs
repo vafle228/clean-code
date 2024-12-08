@@ -1,5 +1,6 @@
 ﻿using Markdown.Parser.Nodes;
 using Markdown.Parser.Rules;
+using Markdown.Parser.Rules.TagRules;
 using Markdown.Tokenizer.Tokens;
 
 namespace Markdown.Parser;
