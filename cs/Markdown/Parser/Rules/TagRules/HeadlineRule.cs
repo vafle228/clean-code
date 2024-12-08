@@ -11,8 +11,7 @@ public class HeadlineRule : IParsingRule
     public Node? Match(List<Token> tokens, int begin = 0)
     {
         var resultRule = new AndRule([
-            new PatternRule([TokenType.HASH_TAG, TokenType.SPACE]),
-            new ParagraphRule(),
+            new PatternRule([TokenType.HASH_TAG, TokenType.SPACE]), new ParagraphRule(),
         ]);
         return resultRule.Match(tokens, begin) is SpecNode node ? BuildNode(node) : null;
     }

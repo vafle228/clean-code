@@ -18,10 +18,10 @@ public class ContinuesRuleTest
         var tokens = tokenizer.Tokenize("Text with concrete continues_");
         var rule = new ContinuesRule(new TextRule(), new PatternRule(TokenType.UNDERSCORE));
         
-        var match = rule.Match(tokens);
+        var node = rule.Match(tokens);
 
-        match.Should().NotBeNull();
-        match.ToText(tokens).Should().Be("Text with concrete continues");
+        node.Should().NotBeNull();
+        node.ToText(tokens).Should().Be("Text with concrete continues");
     }
 
     [Test]
@@ -30,8 +30,8 @@ public class ContinuesRuleTest
         var tokens = tokenizer.Tokenize("Text with concrete continues_");
         var rule = new ContinuesRule(new TextRule(), new PatternRule(TokenType.HASH_TAG));
         
-        var match = rule.Match(tokens);
+        var node = rule.Match(tokens);
 
-        match.Should().BeNull();
+        node.Should().BeNull();
     }
 }

@@ -30,11 +30,11 @@ public class ConditionalRuleTest
         var tokens = tokenizer.Tokenize(text);
         var rule = new ConditionalRule(primaryRule, (node, _) => node.NodeType == NodeType.TEXT);
         
-        var match = rule.Match(tokens);
+        var node = rule.Match(tokens);
 
-        match.Should().NotBeNull();
-        match.ToText(tokens).Should().Be(text);
-        match.NodeType.Should().Be(NodeType.TEXT);
+        node.Should().NotBeNull();
+        node.ToText(tokens).Should().Be(text);
+        node.NodeType.Should().Be(NodeType.TEXT);
     }
     
     [Test, TestCaseSource(nameof(CasesThatMatchesPrimaryRule))]
@@ -43,8 +43,8 @@ public class ConditionalRuleTest
         var tokens = tokenizer.Tokenize(text);
         var rule = new ConditionalRule(primaryRule, (_, _) => false);
         
-        var match = rule.Match(tokens);
+        var node = rule.Match(tokens);
 
-        match.Should().BeNull();
+        node.Should().BeNull();
     }
 }

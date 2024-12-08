@@ -19,10 +19,10 @@ public class KleenStarRuleTest
         var rule = new KleenStarRule(primaryRule);
         var tokens = tokenizer.Tokenize(text);
         
-        var match = rule.Match(tokens);
+        var node = rule.Match(tokens);
         
-        match.Should().NotBeNull();
-        match.ToText(tokens).Should().Be(text);
+        node.Should().NotBeNull();
+        node.ToText(tokens).Should().Be(text);
     }
 
     [TestCase("Just a part _ will match", ExpectedResult = "Just a part ")]
@@ -32,9 +32,9 @@ public class KleenStarRuleTest
         var rule = new KleenStarRule(primaryRule);
         var tokens = tokenizer.Tokenize(text);
         
-        var match = rule.Match(tokens);
+        var node = rule.Match(tokens);
         
-        match.Should().NotBeNull();
-        return match.ToText(tokens);
+        node.Should().NotBeNull();
+        return node.ToText(tokens);
     } 
 }
