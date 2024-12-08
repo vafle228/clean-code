@@ -1,7 +1,6 @@
 ﻿namespace Markdown.Parser.Nodes;
 
-public class Node(NodeType nodeType, int consumed)
+public record Node(NodeType NodeType, int Start, int Consumed)
 {
-    public int Consumed { get; } = consumed;
-    public NodeType NodeType { get; } = nodeType;
+    public int End { get; } = Start + Consumed;
 }

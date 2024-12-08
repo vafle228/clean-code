@@ -22,7 +22,7 @@ public class TextRuleTest
 
         node.Should().NotBeNull();
         node.Consumed.Should().Be(1);
-        node.Text.Should().Be(markdown);
+        node.ToText(tokens).Should().Be(markdown);
     }
 
     [TestCase("_")]
@@ -44,19 +44,15 @@ public class TextRuleTest
         var node = rule.Match(tokens) as TextNode;
         
         node.Should().NotBeNull();
-        node.Tokens.Should().BeEquivalentTo(tokens, options => options.WithStrictOrdering());
+        node.ToText(tokens).Should().BeEquivalentTo(markdown);
     }
 
-    [TestCase("Hello _world_")]
-    [TestCase("_No text at start_ but some in the end", 9)]
-    public void TextRule_Match_SequenceShouldBeInterruptedWithNoSpaceOrWordType(string markdown, int begin = 0)
+    [TestCase("Hello _world_", ExpectedResult = "Hello ")]
+    [TestCase("_No text at start_ but some in the end", 9, ExpectedResult = " but some in the end")]
+    public string? TextRule_Match_SequenceShouldBeInterruptedWithNoSpaceOrWordType(string markdown, int begin = 0)
     {
         var tokens = tokenizer.Tokenize(markdown);
-        
         var node = rule.Match(tokens, begin) as TextNode;
-        
-        node.Should().NotBeNull();
-        node.Tokens.Should().NotBeEquivalentTo(tokens);
-        node.Tokens.Should().BeEquivalentTo(tokens.Skip(begin).Take(node.Consumed).ToList());
+        return node?.ToText(tokens);
     }
 }

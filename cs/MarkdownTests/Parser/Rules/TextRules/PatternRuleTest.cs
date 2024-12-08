@@ -20,7 +20,7 @@ public class PatternRuleTest
         var node = rule.Match(tokens) as TextNode;
         
         node.Should().NotBeNull();
-        node.Tokens.Should().BeEquivalentTo(tokens, options => options.WithStrictOrdering());
+        node.ToText(tokens).Should().BeEquivalentTo("_");
     }
 
     [Test]
@@ -32,6 +32,6 @@ public class PatternRuleTest
         var node = rule.Match(tokens) as TextNode;
         
         node.Should().NotBeNull();
-        node.Tokens.Should().BeEquivalentTo(tokens, options => options.WithStrictOrdering());
+        node.ToText(tokens).Should().BeEquivalentTo("_\n ");
     }
 }

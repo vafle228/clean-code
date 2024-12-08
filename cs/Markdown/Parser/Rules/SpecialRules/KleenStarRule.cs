@@ -10,6 +10,6 @@ public class KleenStarRule(IParsingRule pattern) : IParsingRule
     {
         var nodes = tokens.KleenStarMatch(pattern, begin);
         var consumed = nodes.Aggregate(0, (acc, node) => acc + node.Consumed);
-        return consumed == 0 ? null : new SpecNode(nodes, consumed);
+        return consumed == 0 ? null : new SpecNode(nodes, begin, consumed);
     }
 }

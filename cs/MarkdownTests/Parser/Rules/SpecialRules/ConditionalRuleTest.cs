@@ -33,7 +33,7 @@ public class ConditionalRuleTest
         var match = rule.Match(tokens);
 
         match.Should().NotBeNull();
-        match.ToText().Should().Be(text);
+        match.ToText(tokens).Should().Be(text);
         match.NodeType.Should().Be(NodeType.TEXT);
     }
     

@@ -31,7 +31,7 @@ public class OrRuleTest
         var node = rule.Match(tokens) as TextNode;
         
         node.Should().NotBeNull();
-        node.ToText().Should().Be("BothMatch");
+        node.ToText(tokens).Should().Be("BothMatch");
     }
 
     [TestCase("_No match att all_")]

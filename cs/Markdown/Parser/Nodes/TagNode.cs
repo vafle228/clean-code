@@ -1,10 +1,13 @@
-﻿namespace Markdown.Parser.Nodes;
+﻿using Markdown.Parser.Rules.Tools;
+using Markdown.Tokenizer.Tokens;
 
-public class TagNode(NodeType nodeType, List<Node> children, int consumed) : Node(nodeType, consumed)
+namespace Markdown.Parser.Nodes;
+
+public record TagNode(NodeType NodeType, List<Node> Children, int Start, int Consumed) : Node(NodeType, Start, Consumed)
 {
-    public List<Node> Children { get; } = children;
-
-    public TagNode(NodeType nodeType, Node child, int consumed) 
-        :this(nodeType, [child], consumed)
+    public TagNode(NodeType nodeType, Node child, int start, int consumed) 
+        : this(nodeType, [child], start, consumed)
     { }
+
+    public string ToText(List<Token> tokens) => Children.ToText(tokens);
 }
