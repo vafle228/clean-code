@@ -17,8 +17,17 @@ public class AndRule(List<IParsingRule> pattern) : IParsingRule
     
     public Node? Match(List<Token> tokens, int begin = 0)
     {
-        var nodes = tokens.MatchPattern(pattern, begin);
-        var consumed = nodes.Aggregate(0, (acc, node) => acc + node.Consumed);
-        return consumed == 0 ? null : new SpecNode(nodes, begin, consumed);
+        var consumed = 0;
+        var nodes = new List<Node>();
+
+        foreach (var rule in pattern)
+        {
+            var newBegin = begin + consumed;
+            if (rule.Match(tokens, newBegin) is not { } node) return null;
+            
+            nodes.Add(node); 
+            consumed += node.Consumed; 
+        }
+        return new SpecNode(nodes, begin, consumed);
     }
 }
