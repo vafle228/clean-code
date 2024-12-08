@@ -8,6 +8,4 @@ public record TagNode(NodeType NodeType, List<Node> Children, int Start, int Con
     public TagNode(NodeType nodeType, Node child, int start, int consumed) 
         : this(nodeType, [child], start, consumed)
     { }
-
-    public string ToText(List<Token> tokens) => Children.ToText(tokens);
 }
