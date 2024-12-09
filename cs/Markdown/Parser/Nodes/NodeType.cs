@@ -2,7 +2,13 @@
 
 public enum NodeType
 {
-    ITALIC,
     BOLD,
-    TEXT
+    BODY,
+    TEXT,
+    ITALIC,
+    ESCAPE,
+    HEADLINE,
+    PARAGRAPH,
+    
+    SPECIAL,
 }

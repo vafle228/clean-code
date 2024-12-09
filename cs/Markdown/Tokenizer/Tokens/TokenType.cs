@@ -4,8 +4,9 @@ public enum TokenType
 {
     WORD,
     UNDERSCORE,
-    DOUBLE_UNDERSCORE,
     SPACE,
     NEW_LINE,
     NUMBER,
+    HASH_TAG,
+    BACK_SLASH,
 }
