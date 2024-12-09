@@ -8,4 +8,5 @@ public enum TokenType
     NEW_LINE,
     NUMBER,
     HASH_TAG,
+    BACK_SLASH,
 }

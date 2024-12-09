@@ -22,6 +22,7 @@ public class SpecScanner : ITokenScanner
         '#' => TokenType.HASH_TAG,
         '\n' => TokenType.NEW_LINE,
         '_' => TokenType.UNDERSCORE,
+        '\\' => TokenType.BACK_SLASH,
         _ => null
     };
 }
