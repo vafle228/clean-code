@@ -3,6 +3,7 @@
 public enum NodeType
 {
     BOLD,
+    BODY,
     TEXT,
     ITALIC,
     ESCAPE,
