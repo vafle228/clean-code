@@ -44,8 +44,8 @@ public class ParagraphRuleTest
         node.Children.First(n => n.NodeType == NodeType.ITALIC).ToText(tokens).Should().Be("italic");
     }
     
-    [TestCase("__bold and _italic__ intersection_")]
-    [TestCase("Sentence with _italic and __bold_ intersection__")]
+    [TestCase(@"__bold and# _italic__ \intersection_")]
+    [TestCase(@"\Sentence with _italic #and __bold_ intersection__")]
     public void ParagraphRule_Match_FullyTextParagraphCase(string text)
     {
         var tokens = tokenizer.Tokenize($"{text}\n");
@@ -56,5 +56,13 @@ public class ParagraphRuleTest
         node.ToText(tokens).Should().Be(text);
         node.NodeType.Should().Be(NodeType.PARAGRAPH);
         node.Children.Should().OnlyContain(n => n.NodeType == NodeType.TEXT);
+    }
+    
+    [TestCase(@"Escaped \_italic\_ tag", ExpectedResult = "Escaped _italic_ tag")]
+    public string? ParagraphRule_Match_EscapedTagCase(string text)
+    {
+        var tokens = tokenizer.Tokenize($"{text}\n");
+        var node = rule.Match(tokens) as TagNode;
+        return node?.ToText(tokens);
     }
 }

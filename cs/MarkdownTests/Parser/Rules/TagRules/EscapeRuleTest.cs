@@ -1,15 +1,16 @@
 ﻿using FluentAssertions;
-using Markdown.Parser.Rules.TextRules;
+using Markdown.Parser.Rules.TagRules;
 using Markdown.Parser.Rules.Tools;
 using Markdown.Tokenizer;
+using Markdown.Tokenizer.Tokens;
 
-namespace MarkdownTests.Parser.Rules.TextRules;
+namespace MarkdownTests.Parser.Rules.TagRules;
 
 [TestFixture]
 public class EscapeRuleTest
 {
-    private readonly EscapeRule rule = new();
     private readonly MarkdownTokenizer tokenizer = new();
+    private readonly EscapeRule rule = new([TokenType.UNDERSCORE, TokenType.HASH_TAG]);
 
     [TestCase(@"\_", ExpectedResult = "_")]
     [TestCase(@"\#", ExpectedResult = "#")]
