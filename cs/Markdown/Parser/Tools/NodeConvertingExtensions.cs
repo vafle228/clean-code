@@ -2,7 +2,7 @@
 using Markdown.Parser.Nodes;
 using Markdown.Tokenizer.Tokens;
 
-namespace Markdown.Parser.Rules.Tools;
+namespace Markdown.Parser.Tools;
 
 public static class NodeConvertingExtensions
 {
