@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Markdown.Parser.Nodes;
 using Markdown.Parser.Rules.TagRules;
-using Markdown.Parser.Rules.Tools;
+using Markdown.Parser.Tools;
 using Markdown.Tokenizer;
 
 namespace MarkdownTests.Parser.Rules.TagRules;

@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using Markdown.Parser.Nodes;
 using Markdown.Parser.Rules.SpecialRules;
-using Markdown.Parser.Rules.Tools;
 using Markdown.Tokenizer;
 using Markdown.Tokenizer.Tokens;
 

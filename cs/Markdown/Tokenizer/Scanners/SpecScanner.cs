@@ -20,9 +20,9 @@ public class SpecScanner : ITokenScanner
     {
         ' ' => TokenType.SPACE,
         '#' => TokenType.HASH_TAG,
-        '\n' => TokenType.NEW_LINE,
         '_' => TokenType.UNDERSCORE,
         '\\' => TokenType.BACK_SLASH,
+        '\n' or '\r' => TokenType.NEW_LINE,
         _ => null
     };
 }

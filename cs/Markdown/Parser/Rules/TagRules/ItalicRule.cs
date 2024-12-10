@@ -1,7 +1,7 @@
 ﻿using Markdown.Parser.Nodes;
 using Markdown.Parser.Rules.SpecialRules;
 using Markdown.Parser.Rules.TextRules;
-using Markdown.Parser.Rules.Tools;
+using Markdown.Parser.Tools;
 using Markdown.Tokenizer.Tokens;
 
 namespace Markdown.Parser.Rules.TagRules;
