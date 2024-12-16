@@ -8,9 +8,15 @@ namespace Markdown.Parser.Rules.TagRules;
 
 public class ItalicRule : IParsingRule
 {
+    private static readonly List<TokenType> TextSymbols =
+    [
+        TokenType.WORD, TokenType.SPACE, 
+        TokenType.HASH_TAG, TokenType.BACK_SLASH
+    ];
+    
     private readonly AndRule innerBoldRule = new([
         PatternRuleFactory.DoubleUnderscore(),
-        new TextRule(),
+        new TextRule(TextSymbols),
         PatternRuleFactory.DoubleUnderscore()
     ]);
 
@@ -30,7 +36,7 @@ public class ItalicRule : IParsingRule
 
     private TagNode? MatchItalic(List<Token> tokens, int begin)
     {
-        var valueRule = new OrRule(new TextRule(), innerBoldRule);
+        var valueRule = new OrRule(new TextRule(TextSymbols), innerBoldRule);
         var pattern = new AndRule([
             new PatternRule(TokenType.UNDERSCORE),
             new ConditionalRule(new KleenStarRule(valueRule), HasRightBorders),

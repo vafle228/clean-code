@@ -125,7 +125,7 @@ internal static class Program
     
     public static void Main(string[] args)
     {
-        var markdown = Markdown;
+        var markdown = Test1;
         
         var rule = new BodyRule();
         var generator = new HtmlGenerator();

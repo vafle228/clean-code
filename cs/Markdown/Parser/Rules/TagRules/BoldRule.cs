@@ -8,6 +8,12 @@ namespace Markdown.Parser.Rules.TagRules;
 
 public class BoldRule : IParsingRule
 {
+    private static readonly List<TokenType> TextSymbols =
+    [
+        TokenType.WORD, TokenType.SPACE, 
+        TokenType.HASH_TAG, TokenType.BACK_SLASH
+    ];
+    
     public Node? Match(List<Token> tokens, int begin = 0)
     {
         return !InWordBoldRule.IsTagInWord(tokens, begin)
@@ -17,7 +23,7 @@ public class BoldRule : IParsingRule
     
     private static TagNode? MatchBold(List<Token> tokens, int begin = 0)
     {
-        var valueRule = new OrRule(new ItalicRule(), new TextRule());
+        var valueRule = new OrRule(new ItalicRule(), new TextRule(TextSymbols));
         var pattern = new AndRule([
             PatternRuleFactory.DoubleUnderscore(),
             new ConditionalRule(new KleenStarRule(valueRule), HasRightBorders),
