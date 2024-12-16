@@ -11,7 +11,9 @@ public class ItalicRule : IParsingRule
     private static readonly List<TokenType> TextSymbols =
     [
         TokenType.WORD, TokenType.SPACE, 
-        TokenType.HASH_TAG, TokenType.BACK_SLASH
+        TokenType.HASH_TAG, TokenType.BACK_SLASH,
+        TokenType.OPEN_BRACKET, TokenType.CLOSE_BRACKET,
+        TokenType.OPEN_SQUARE_BRACKET, TokenType.CLOSE_SQUARE_BRACKET
     ];
     
     private readonly AndRule innerBoldRule = new([
@@ -55,5 +57,6 @@ public class ItalicRule : IParsingRule
     }
 
     private static bool HasRightBorders(Node node, List<Token> tokens)
-        => tokens[node.End].TokenType != TokenType.SPACE && tokens[node.Start].TokenType != TokenType.SPACE;
+        => tokens[node.Start].TokenType != TokenType.SPACE 
+           && tokens[node.End].TokenType is not (TokenType.SPACE or TokenType.BACK_SLASH);
 }

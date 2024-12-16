@@ -9,4 +9,10 @@ public enum TokenType
     NUMBER,
     HASH_TAG,
     BACK_SLASH,
+
+    OPEN_BRACKET,
+    CLOSE_BRACKET,
+    
+    OPEN_SQUARE_BRACKET,
+    CLOSE_SQUARE_BRACKET,
 }

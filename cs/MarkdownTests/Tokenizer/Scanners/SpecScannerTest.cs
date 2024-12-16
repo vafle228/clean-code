@@ -12,6 +12,10 @@ public class SpecScannerTest
     [TestCase("\n", ExpectedResult = TokenType.NEW_LINE)]
     [TestCase("_", ExpectedResult = TokenType.UNDERSCORE)]
     [TestCase("\\", ExpectedResult = TokenType.BACK_SLASH)]
+    [TestCase("(", ExpectedResult = TokenType.OPEN_BRACKET)]
+    [TestCase(")", ExpectedResult = TokenType.CLOSE_BRACKET)]
+    [TestCase("[", ExpectedResult = TokenType.OPEN_SQUARE_BRACKET)]
+    [TestCase("]", ExpectedResult = TokenType.CLOSE_SQUARE_BRACKET)]
     [TestCase("Twelfth len _", 12, ExpectedResult = TokenType.UNDERSCORE)]
     public TokenType SpecScanner_Scan_ShouldScanValidTokenTypeFromText(string text, int begin = 0)
     {

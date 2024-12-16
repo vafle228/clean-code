@@ -5,6 +5,7 @@ public enum NodeType
     BOLD,
     BODY,
     TEXT,
+    HREF,
     ITALIC,
     ESCAPE,
     HEADLINE,
