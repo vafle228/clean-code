@@ -29,7 +29,7 @@ public class ParagraphRuleTest
     [Test]
     public void ParagraphRule_Match_ParagraphWithInnerTags()
     {
-        const string text = "Paragraph with _italic_ and __bold__ tags";
+        const string text = "Paragraph with _italic_ [href](href) __bold__ tags";
         var tokens = tokenizer.Tokenize($"{text}\n");
         
         var node = rule.Match(tokens) as TagNode;
@@ -38,8 +38,12 @@ public class ParagraphRuleTest
         node.NodeType.Should().Be(NodeType.PARAGRAPH);
         node.Consumed.Should().Be(tokens.Count);
         node.Children.Select(n => n.NodeType).Should().BeEquivalentTo(
-            [NodeType.TEXT, NodeType.ITALIC, NodeType.TEXT, NodeType.BOLD, NodeType.TEXT],
+            [
+                NodeType.TEXT, NodeType.ITALIC, NodeType.TEXT,
+                NodeType.HREF, NodeType.TEXT, NodeType.BOLD, NodeType.TEXT
+            ],
             options => options.WithStrictOrdering());
+        node.Children.First(n => n.NodeType == NodeType.HREF).ToText(tokens).Should().Be("href");
         node.Children.First(n => n.NodeType == NodeType.BOLD).ToText(tokens).Should().Be("bold");
         node.Children.First(n => n.NodeType == NodeType.ITALIC).ToText(tokens).Should().Be("italic");
     }
@@ -58,7 +62,10 @@ public class ParagraphRuleTest
         node.Children.Should().OnlyContain(n => n.NodeType == NodeType.TEXT);
     }
     
+    [TestCase(@"Escaped _italic\_ tag", ExpectedResult = "Escaped _italic_ tag")]
     [TestCase(@"Escaped \_italic\_ tag", ExpectedResult = "Escaped _italic_ tag")]
+    [TestCase(@"Escaped [href](href\) tag", ExpectedResult = "Escaped [href](href) tag")]
+    [TestCase(@"Escaped \[href](href) tag", ExpectedResult = "Escaped [href](href) tag")]
     public string? ParagraphRule_Match_EscapedTagCase(string text)
     {
         var tokens = tokenizer.Tokenize($"{text}\n");
