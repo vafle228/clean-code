@@ -32,6 +32,9 @@ public class HtmlGenerator : IGenerator
         TagNode { NodeType: NodeType.BOLD, Children: var children } 
             => $"<strong>{RenderChildren(children, tokens)}</strong>",
         
+        HrefNode { Href: var href, Children: var children }
+            => $"<a href=\"{href}\">{RenderChildren(children, tokens)}</a>",
+        
         _ => throw new ArgumentOutOfRangeException(nameof(node))
     };
 
