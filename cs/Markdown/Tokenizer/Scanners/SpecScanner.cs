@@ -23,6 +23,12 @@ public class SpecScanner : ITokenScanner
         '_' => TokenType.UNDERSCORE,
         '\\' => TokenType.BACK_SLASH,
         '\n' or '\r' => TokenType.NEW_LINE,
+        
+        '(' => TokenType.OPEN_BRACKET,
+        ')' => TokenType.CLOSE_BRACKET,
+        '[' => TokenType.OPEN_SQUARE_BRACKET,
+        ']' => TokenType.CLOSE_SQUARE_BRACKET,
+        
         _ => null
     };
 }
