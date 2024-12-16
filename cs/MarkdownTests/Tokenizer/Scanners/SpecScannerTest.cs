@@ -16,8 +16,9 @@ public class SpecScannerTest
     public TokenType SpecScanner_Scan_ShouldScanValidTokenTypeFromText(string text, int begin = 0)
     {
         var scanner = new SpecScanner();
+        var memoryText = new Memory<char>(text.ToCharArray());
         
-        var token = scanner.Scan(text, begin);
+        var token = scanner.Scan(memoryText[begin..]);
         
         token.Should().NotBeNull();
         return token.TokenType;
@@ -29,7 +30,10 @@ public class SpecScannerTest
     public void SpecScanner_Scan_ShouldScanNullFromText(string text, int begin)
     {
         var scanner = new SpecScanner();
-        var token = scanner.Scan(text, begin);
+        var memoryText = new Memory<char>(text.ToCharArray());
+        
+        var token = scanner.Scan(memoryText[begin..]);
+        
         token.Should().BeNull();
     }
 }

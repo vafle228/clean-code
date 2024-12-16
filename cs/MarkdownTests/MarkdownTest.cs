@@ -4,6 +4,7 @@ using FluentAssertions;
 using Markdown.Generator.Generators;
 using Markdown.Parser.Rules.TagRules;
 using Markdown.Tokenizer;
+using Markdown.Tokenizer.Tokens;
 
 namespace MarkdownTests;
 
@@ -21,7 +22,7 @@ public class MarkdownTest
         var sw = new Stopwatch();
         var results = new List<TimeSpan>();
 
-        for (var len = 640; len <= 5120; len *= scale)
+        for (var len = 640; len <= 5120 * 64; len *= scale)
         {
             var markdown = GenerateMarkdown(len);
             sw.Start(); RenderMarkdown(markdown); sw.Stop();
@@ -30,7 +31,7 @@ public class MarkdownTest
         
         Enumerable.Range(1, results.Count - 1)
             .Select(i => results[i].Ticks / results[i - 1].Ticks)
-            .Should().OnlyContain(timeRatio => timeRatio < scale * scale);
+            .Should().OnlyContain(timeRatio => timeRatio < (double)scale * scale);
     }
 
     private static string GenerateMarkdown(int len)

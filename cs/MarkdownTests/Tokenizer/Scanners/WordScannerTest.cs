@@ -13,8 +13,9 @@ public class WordScannerTest
     public void WordScanner_Scan_TokenShouldHaveTextTokenType(string text, int begin)
     {
         var scanner = new WordScanner();
+        var memoryText = new Memory<char>(text.ToCharArray());
         
-        var token = scanner.Scan(text, begin);
+        var token = scanner.Scan(memoryText[begin..]);
 
         token.Should().NotBeNull();
         token.TokenType.Should().Be(TokenType.WORD);
@@ -26,7 +27,10 @@ public class WordScannerTest
     public void WordScanner_Scan_ShouldScanNullFromText(string text, int begin)
     {
         var scanner = new WordScanner();
-        var token = scanner.Scan(text, begin);
+        var memoryText = new Memory<char>(text.ToCharArray());
+        
+        var token = scanner.Scan(memoryText[begin..]);
+        
         token.Should().BeNull();
     }
 }

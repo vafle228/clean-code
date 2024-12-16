@@ -13,11 +13,14 @@ public class MarkdownTokenizer
     {
         var begin = 0;
         var tokenList = new List<Token>();
+        var memoryText = new Memory<char>(markdown.ToCharArray());
         
         while (begin < markdown.Length)
         {
+            var textSlice = memoryText[begin..];
+            
             var token = scanners
-                .Select(sc => sc.Scan(markdown, begin))
+                .Select(sc => sc.Scan(textSlice))
                 .First(token => token is not null);
             begin += token!.Length; tokenList.Add(token);
         }
