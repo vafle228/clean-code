@@ -12,8 +12,9 @@ public class NumberScannerTest
     public void NumberScanner_Scan_TokenShouldHaveNumberType(string text, int begin)
     {
         var scanner = new NumberScanner();
+        var memoryText = new Memory<char>(text.ToCharArray());
         
-        var token = scanner.Scan(text, begin);
+        var token = scanner.Scan(memoryText[begin..]);
         
         token.Should().NotBeNull();
         token.TokenType.Should().Be(TokenType.NUMBER);
@@ -25,7 +26,10 @@ public class NumberScannerTest
     public void NumberScanner_Scan_ShouldScanNullFromText(string text, int begin)
     {
         var scanner = new NumberScanner();
-        var token = scanner.Scan(text, begin);
+        var memoryText = new Memory<char>(text.ToCharArray());
+        
+        var token = scanner.Scan(memoryText[begin..]);
+        
         token.Should().BeNull();
     }
 }

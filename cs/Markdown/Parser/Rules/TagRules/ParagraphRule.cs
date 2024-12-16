@@ -7,10 +7,15 @@ namespace Markdown.Parser.Rules.TagRules;
 
 public class ParagraphRule : IParsingRule
 {
+    private readonly List<TokenType> escapedTokens =
+    [
+        TokenType.UNDERSCORE, TokenType.BACK_SLASH
+    ];
+    
     public Node? Match(List<Token> tokens, int begin = 0)
     {
         var tagRules = new OrRule([
-            new EscapeRule(TokenType.UNDERSCORE), 
+            new EscapeRule(escapedTokens), 
             new ItalicRule(), new BoldRule(), new TextRule(),
         ]);
         var tokenRules = new OrRule([
