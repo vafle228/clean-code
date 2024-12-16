@@ -97,8 +97,6 @@ internal static class Program
         
         Превратится в <h1><a href="google.com">Заголовок с ссылкой</a></h1> 
         """;
-
-    private const string Test1 = """_em\mm_""";
     
     public static void Main(string[] args)
     {
