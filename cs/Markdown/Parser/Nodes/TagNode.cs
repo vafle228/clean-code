@@ -6,8 +6,3 @@ public record TagNode(NodeType NodeType, List<Node> Children, int Start, int Con
         : this(nodeType, [child], start, consumed)
     { }
 }
-
-public static class TagNodeFactory
-{
-    // public static TagNode BoldNode(Func<SpecNode, >)
-}

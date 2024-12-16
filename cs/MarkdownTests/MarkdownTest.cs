@@ -4,7 +4,6 @@ using FluentAssertions;
 using Markdown.Generator.Generators;
 using Markdown.Parser.Rules.TagRules;
 using Markdown.Tokenizer;
-using Markdown.Tokenizer.Tokens;
 
 namespace MarkdownTests;
 
